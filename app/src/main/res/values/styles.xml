@@ -1,0 +1,37 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="AppTheme.Splash_TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20.0dip</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">0.0dp</item>
+        <item name="android:background">@drawable/common_transparent_button</item>
+        <item name="android:textSize">@dimen/common_textsize_2</item>
+        <item name="android:textColor">@color/common_transparent_button_text_color</item>
+    </style>
+
+    <style name="PasswordToggle">
+        <item name="android:background">@drawable/common_password_toggle</item>
+        <item name="android:layout_width">20.0dip</item>
+        <item name="android:layout_height">13.0dip</item>
+        <item name="android:layout_marginRight">2.0dip</item>
+        <item name="android:checked">false</item>
+        <item name="android:textOn">@null</item>
+        <item name="android:textOff">@null</item>
+    </style>
+
+    <style name="HorizontalSeparatorLine">
+        <item name="android:background">@color/divider_color_3</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/common_separator_line_size</item>
+    </style>
+
+</resources>

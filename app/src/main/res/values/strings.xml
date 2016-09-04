@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">神盾</string>
+    <string name="splash_declaration">本应用模拟小米WIfiAPP实现，仅供学习使用</string>
+    <string name="splash_add_new_router">添加新的路由器</string>
+    <string name="splash_login">登录</string>
+    <string name="splash_register">注册</string>
+
+    <string name="login_ip_prompt">IP地址</string>
+    <string name="login_ip_hint">请输入路由器IP地址</string>
+    <string name="login_default_ip_value">192.168.0.1</string>
+    <string name="login_password_prompt">密码</string>
+    <string name="login_password_hint">请输入密码</string>
+    <string name="login_account_login">登录</string>
+    <string name="login_forget_password">忘记密码</string>
+</resources>

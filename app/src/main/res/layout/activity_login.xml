@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context="com.xiaoxuetu.shield.LoginActivity">
+
+    <!-- title bar -->
+    <include layout="@layout/title_bar" />
+
+    <!-- 内容主题 -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/common_full_content_padding_horizontal"
+        android:paddingTop="@dimen/common_full_content_padding_top"
+        android:paddingRight="@dimen/common_full_content_padding_horizontal"
+        android:orientation="vertical">
+
+        <!-- 帐号、密码输入框 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/login_account_password_input_container"
+            android:background="@drawable/common_inputbox_normal_bg" >
+
+            <!-- IP输入框 -->
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/inputbox_padding"
+                android:paddingRight="@dimen/inputbox_padding"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/inputbox_height">
+
+                <TextView
+                    android:textSize="@dimen/common_textsize_2"
+                    android:textColor="@color/common_textcolor_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_ip_prompt" />
+
+                <EditText
+                    android:textSize="@dimen/common_textsize_2"
+                    android:textColor="@color/common_textcolor_2"
+                    android:textColorHint="@color/common_textcolor_4"
+                    android:gravity="center_vertical"
+                    android:id="@+id/login_account_password_account_editor"
+                    android:background="@null"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="@dimen/inputbox_content_margin"
+                    android:hint="@string/login_ip_hint"
+                    android:text="@string/login_default_ip_value"
+                    android:singleLine="true"
+                    android:layout_weight="1.0" />
+            </LinearLayout>
+
+            <View style="@style/HorizontalSeparatorLine" />
+
+            <!-- 密码 输入框 -->
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/inputbox_padding"
+                android:paddingRight="@dimen/inputbox_padding"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/inputbox_height">
+
+                <TextView
+                    android:textSize="@dimen/common_textsize_2"
+                    android:textColor="@color/common_textcolor_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_password_prompt" />
+
+                <EditText
+                    android:textSize="@dimen/common_textsize_2"
+                    android:textColor="@color/common_textcolor_2"
+                    android:textColorHint="@color/common_textcolor_4"
+                    android:gravity="center_vertical"
+                    android:id="@+id/login_account_password_password_editor"
+                    android:background="@null"
+                    android:layout_width="0.0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="@dimen/inputbox_content_margin"
+                    android:layout_marginRight="@dimen/inputbox_content_margin"
+                    android:hint="@string/login_password_hint"
+                    android:singleLine="true"
+                    android:layout_weight="1.0"
+                    android:inputType="textPassword">
+                    <requestFocus/>
+                </EditText>
+
+                <ToggleButton
+                    android:id="@+id/login_account_password_password_toggle"
+                    style="@style/PasswordToggle" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:textSize="@dimen/common_textsize_2"
+            android:textColor="@color/common_textcolor_7"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/login_account_password_login_error"
+            android:visibility="invisible"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40.0dip" />
+
+        <TextView
+            android:textSize="@dimen/common_textsize_2"
+            android:textColor="@color/common_button_text_color"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/login_account_password_login_button"
+            android:background="@drawable/common_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dip"
+            android:text="@string/login_account_login"
+            android:clickable="true"/>
+
+        <TextView
+            android:textSize="@dimen/common_textsize_2"
+            android:textColor="@color/common_textcolor_3"
+            android:layout_gravity="right"
+            android:id="@+id/login_account_password_forget_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20.0dip"
+            android:text="@string/login_forget_password"
+            android:clickable="true"/>
+    </LinearLayout>
+
+
+</LinearLayout>

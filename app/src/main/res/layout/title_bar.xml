@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xiaoxuetu.shield.common.widget.titlebar.TitleBar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/title_bar_height"
+    android:background="@color/app_style_background_color"
+    android:id="@+id/title_bar">
+
+    <ImageView
+        android:layout_gravity="left"
+        android:id="@+id/title_bar_volume_switch"
+        android:layout_width="@dimen/title_bar_return_area_size"
+        android:layout_height="match_parent"
+        android:src="@drawable/title_bar_return"
+        android:clickable="true"
+        android:scaleType="center"/>
+
+    <TextView
+        android:textSize="@dimen/common_textsize_1"
+        android:textColor="@color/white"
+        android:ellipsize="end"
+        android:layout_gravity="center"
+        android:id="@+id/title_bar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/title_bar_return_area_size"
+        android:layout_marginRight="@dimen/title_bar_return_area_size"
+        android:singleLine="true"
+        android:text="TP-Link帐号登录"/>
+
+    <FrameLayout
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent">
+
+        <ImageView android:id="@+id/title_bar_more"
+            android:layout_width="@dimen/title_bar_return_area_size"
+            android:layout_height="fill_parent"
+            android:src="@drawable/title_bar_more"
+            android:visibility="gone"
+            android:scaleType="center" />
+
+        <TextView
+            android:textSize="@dimen/common_textsize_4"
+            android:textColor="@color/white_80_transparent"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_gravity="center_vertical"
+            android:id="@+id/title_bar_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text=" 注册 "
+            android:background="@drawable/title_bar_button"
+            android:layout_marginRight="@dimen/title_bar_button_margin" />
+    </FrameLayout>
+
+
+</com.xiaoxuetu.shield.common.widget.titlebar.TitleBar>

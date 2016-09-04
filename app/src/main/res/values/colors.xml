@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white_30_transparent">#40ffffff</color>
+    <color name="white_50_transparent">#80ffffff</color>
+    <color name="white_80_transparent">#ccffffff</color>
+    <color name="white">#ffffffff</color>
+    <color name="app_style_background_color">#ff1782dd</color>
+
+    <color name="common_textcolor_1">#ff676e76</color>
+    <color name="common_textcolor_2">#ff8d949a</color>
+    <color name="common_textcolor_3">#ffccd2d6</color>
+    <color name="common_textcolor_4">#ffd5d5d5</color>
+    <color name="common_textcolor_7">#ffff7700</color>
+
+    <color name="divider_color_1">#ffd2d5d8</color>
+    <color name="divider_color_3">#cdcdcdcd</color>
+    <color name="divider_color_4">#dfdfdfdf</color>
+</resources>

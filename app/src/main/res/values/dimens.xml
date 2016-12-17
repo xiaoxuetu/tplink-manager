@@ -6,6 +6,7 @@
     <dimen name="common_textsize_2">14.0sp</dimen>
 
     <dimen name="common_textsize_4">10.0sp</dimen>
+    <dimen name="common_textsize_6">11.0sp</dimen>
 
 
     <dimen name="common_full_content_padding_horizontal">15.0dip</dimen>
@@ -16,6 +17,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="title_bar_height">50.0dip</dimen>
     <dimen name="title_bar_return_area_size">48.0dip</dimen>
+    <dimen name="titlebar_button_margin_left">10.0dip</dimen>
 
     <dimen name="title_bar_button_height">26.0dip</dimen>
     <dimen name="title_bar_button_width">48.0dip</dimen>
@@ -26,5 +28,7 @@
     <dimen name="inputbox_padding">10.0dip</dimen>
 
     <dimen name="common_separator_line_size">0.30000007dip</dimen>
+
+    <dimen name="horizontal_interval_1">5.0dip</dimen>
 
 </resources>

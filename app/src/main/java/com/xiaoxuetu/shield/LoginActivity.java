@@ -1,6 +1,7 @@
 package com.xiaoxuetu.shield;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.xiaoxuetu.shield.common.widget.titlebar.TitleBar;
 
@@ -26,4 +28,18 @@ public class LoginActivity extends AppCompatActivity {
 //        }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        findViewById(R.id.login_account_password_login_button)
+                .setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 }

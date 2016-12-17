@@ -12,4 +12,6 @@
     <string name="login_password_hint">请输入密码</string>
     <string name="login_account_login">登录</string>
     <string name="login_forget_password">忘记密码</string>
+
+    <string name="main_router_type_relay">中继</string>
 </resources>

@@ -14,4 +14,6 @@
     <string name="login_forget_password">忘记密码</string>
 
     <string name="main_router_type_relay">中继</string>
+
+    <string name="client_list_empty_prompt">暂无连接的设备</string>
 </resources>

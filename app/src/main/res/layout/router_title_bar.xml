@@ -24,7 +24,7 @@
                 android:paddingBottom="5.0dip"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:src="@drawable/main_router_list_logo_r2d_online"
+                android:src="@drawable/titlebar_wifi_logo_r2d"
                 android:scaleType="fitCenter"
                 android:layout_centerVertical="true" />
 
@@ -38,6 +38,7 @@
                 android:layout_toRightOf="@id/router_icon"
                 android:layout_alignTop="@id/router_icon">
 
+                <!-- 路由器名称显示 -->
                 <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
                     android:textSize="@dimen/common_textsize_1"
                     android:textColor="@color/common_textcolor_6"
@@ -48,12 +49,14 @@
                     android:layout_height="wrap_content"
                     android:maxWidth="150.0dip"
                     android:text="Xiaomi"
-                    android:singleLine="true" />
+                    android:maxLines="1"/>
 
+                <!-- 中继标示显示 -->
                 <TextView
                     android:textSize="@dimen/common_textsize_6"
                     android:textColor="@color/common_textcolor_6"
                     android:ellipsize="end"
+                    android:visibility="gone"
                     android:gravity="center"
                     android:layout_gravity="center_vertical"
                     android:id="@+id/router_relay"
@@ -68,9 +71,11 @@
                     android:text="@string/main_router_type_relay"
                     android:maxLines="1" />
 
+                <!-- 路由下拉选择按钮 -->
                 <ImageView
                     android:layout_gravity="center_vertical"
                     android:id="@+id/router_arrow"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/horizontal_interval_1"
@@ -86,7 +91,21 @@
                     android:src="@drawable/common_point_now" />
 
             </LinearLayout>
+
+            <!-- 当前路由器网速显示 -->
+            <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+                android:textSize="@dimen/common_textsize_3"
+                android:textColor="@color/white_50_transparent"
+                android:gravity="bottom"
+                android:id="@+id/client_subtitle"
+                android:paddingBottom="8.0dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/router_info"
+                android:text="0.0 KB/s"
+                android:layout_alignBottom="@id/router_icon" />
         </RelativeLayout>
+
     </RelativeLayout>
 
 </LinearLayout>

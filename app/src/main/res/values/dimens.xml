@@ -4,6 +4,7 @@
     <!--<dimen name="activity_vertical_margin">16dp</dimen>-->
     <dimen name="common_textsize_1">16.0sp</dimen>
     <dimen name="common_textsize_2">14.0sp</dimen>
+    <dimen name="common_textsize_3">12.0sp</dimen>
 
     <dimen name="common_textsize_4">10.0sp</dimen>
     <dimen name="common_textsize_6">11.0sp</dimen>

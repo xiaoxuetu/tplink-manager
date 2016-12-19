@@ -3,9 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:background="@color/white"
     tools:context="com.xiaoxuetu.shield.MainActivity">
 
     <include layout="@layout/router_title_bar"/>
+
+    <!-- 无设备连接时的试图显示 -->
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/empty_view"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:background="@drawable/device_list_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="@dimen/common_textsize_2"
+            android:textColor="@color/common_textcolor_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20.0dip"
+            android:text="@string/client_list_empty_prompt" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -40,5 +40,6 @@ public class MainActivity extends AppCompatActivity {
         data1.put("client_net_speed", "1.9 KB/s");
 
         mockData.add(data1);
+        return mockData;
     }
 }

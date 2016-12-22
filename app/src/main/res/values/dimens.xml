@@ -18,6 +18,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="title_bar_height">50.0dip</dimen>
     <dimen name="title_bar_return_area_size">48.0dip</dimen>
+    <dimen name="titlebar_button_margin">10.0dip</dimen>
     <dimen name="titlebar_button_margin_left">10.0dip</dimen>
 
     <dimen name="title_bar_button_height">26.0dip</dimen>
@@ -32,4 +33,17 @@
 
     <dimen name="horizontal_interval_1">5.0dip</dimen>
 
+    <dimen name="client_list_icon_size">54.0dip</dimen>
+    <dimen name="client_list_item_divider_left">84.0dip</dimen>
+
+    <dimen name="listitem_2_text_margin_left">10.0dip</dimen>
+
+    <dimen name="listitem_3_height_1">76.0dip</dimen>
+    <dimen name="listitem_3_padding_left">15.0dip</dimen>
+    <dimen name="listitem_3_padding_right">15.0dip</dimen>
+    <dimen name="listitem_3_text_margin_left">15.0dip</dimen>
+    <dimen name="listitem_3_text_margin_right">15.0dip</dimen>
+    <dimen name="listitem_3_horizontal_interval">15.0dip</dimen>
+
+    <dimen name="divider_height">0.33000004dip</dimen>
 </resources>

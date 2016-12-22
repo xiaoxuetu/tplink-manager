@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/client_list_item_background_selector"
+    android:paddingLeft="@dimen/listitem_3_padding_left"
+    android:paddingRight="@dimen/listitem_3_padding_right"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/listitem_3_height_1">
+    <ImageView
+        android:id="@+id/client_icon"
+        android:layout_width="@dimen/client_list_icon_size"
+        android:layout_height="@dimen/client_list_icon_size"
+        android:layout_centerVertical="true" />
+
+    <ImageView
+        android:id="@+id/admin_icon"
+        android:background="@drawable/client_device_list_icon_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/client_icon"
+        android:layout_alignTop="@+id/client_icon" />
+
+    <View
+        android:id="@+id/anchor"
+        android:layout_width="1.0dip"
+        android:layout_height="1.0dip"
+        android:layout_centerInParent="true" />
+
+    <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+        android:textSize="@dimen/common_textsize_2"
+        android:textColor="@color/common_textcolor_1"
+        android:id="@+id/client_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/listitem_3_text_margin_left"
+        android:layout_toRightOf="@id/client_icon"
+        android:layout_above="@id/anchor" />
+
+    <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+        android:textSize="@dimen/common_textsize_3"
+        android:textColor="@color/common_textcolor_2"
+        android:id="@+id/client_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/listitem_3_horizontal_interval"
+        android:layout_toRightOf="@id/client_icon"
+        android:layout_below="@id/anchor" />
+
+    <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+        android:textSize="@dimen/common_textsize_3"
+        android:textColor="@color/common_textcolor_2"
+        android:gravity="center"
+        android:id="@+id/event_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/listitem_2_text_margin_left"
+        android:layout_toRightOf="@id/client_event"
+        android:layout_below="@id/anchor" />
+
+    <LinearLayout
+        android:gravity="right"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/titlebar_button_margin"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true">
+
+        <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+            android:textSize="@dimen/common_textsize_3"
+            android:textColor="@color/common_textcolor_2"
+            android:id="@+id/client_net_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+            android:textSize="@dimen/common_textsize_3"
+            android:textColor="@color/common_textcolor_3"
+            android:id="@+id/client_extra_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

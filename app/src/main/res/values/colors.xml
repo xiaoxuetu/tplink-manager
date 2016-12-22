@@ -16,4 +16,6 @@
     <color name="divider_color_1">#ffd2d5d8</color>
     <color name="divider_color_3">#cdcdcdcd</color>
     <color name="divider_color_4">#dfdfdfdf</color>
+
+    <color name="listview_item_selected">#fff9f9f9</color>
 </resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@color/divider_color_3"
+        android:left="@dimen/client_list_item_divider_left"
+        android:right="@dimen/listitem_3_text_margin_right" />
+</layer-list>

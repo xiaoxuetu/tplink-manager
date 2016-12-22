@@ -33,4 +33,14 @@
             android:text="@string/client_list_empty_prompt" />
     </LinearLayout>
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/client_list_view"
+        android:fadingEdge="none"
+        android:divider="@drawable/client_list_divider"
+        android:dividerHeight="@dimen/divider_height"
+        android:headerDividersEnabled="false">
+
+    </ListView>
 </RelativeLayout>

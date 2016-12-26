@@ -4,8 +4,9 @@
     android:background="@drawable/client_list_item_background_selector"
     android:paddingLeft="@dimen/listitem_3_padding_left"
     android:paddingRight="@dimen/listitem_3_padding_right"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/listitem_3_height_1">
+
     <ImageView
         android:id="@+id/client_icon"
         android:layout_width="@dimen/client_list_icon_size"

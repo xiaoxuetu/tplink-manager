@@ -47,7 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i=0; i<5; i++) {
             Map<String, Object> data1 = new HashMap<>();
-            data1.put("client_icon", R.drawable.client_device_list_unknown);
+            if (i%2 == 0) {
+                data1.put("client_icon", R.drawable.client_device_list_camera);
+            } else {
+                data1.put("client_icon", R.drawable.client_device_list_unknown);
+            }
             data1.put("client_name", "XiaoMi-" + i);
             data1.put("client_event", "5G连接");
             data1.put("event_time", "2016-12-24 00:10:1" + i);
@@ -88,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Map<String, Object> currentDataMap = dataList.get(position);
-            convertView = inflater.inflate(R.layout.client_list_device_item, null);
+            convertView = inflater.inflate(R.layout.client_list_device_item, parent, false);
             // 设置客户端图片
             ((ImageView) convertView.findViewById(R.id.client_icon))
                     .setImageResource((int)(currentDataMap.get("client_icon")));

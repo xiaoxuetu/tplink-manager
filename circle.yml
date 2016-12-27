@@ -1,0 +1,23 @@
+machine:
+  environment:
+    ANDROID_HOME: /usr/local/android-sdk-linux
+  java:
+    version: oraclejdk8
+
+dependencies:
+  cache_directories:
+    - /usr/local/android-sdk-linux
+    - /home/ubuntu/.gradle
+    - /home/ubuntu/.m2
+    - /home/ubuntu/tplink-manager/.git
+  pre:
+    #- echo y | android update sdk --no-ui --all --filter tools,platform-tools,extra-google-m2repository,extra-google-google_play_services,extra-android-support,android-23
+    #- echo y | android update sdk --no-ui --all --filter build-tools-23.0.1
+    - if [ ! -d "/usr/local/android-sdk-linux/platforms/android-23" ]; then echo y | android update sdk --no-ui --all --filter "android-23"; fi
+    - if [ ! -d "/usr/local/android-sdk-linux/build-tools/23.0.1" ]; then echo y | android update sdk --no-ui --all --filter "build-tools-23.0.1"; fi
+    - if [ ! -d "/usr/local/android-sdk-linux/extras/android/m2repository/com/android/support/design/23.0.1" ]; then echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"; fi
+
+test:
+  override:
+    - ./gradlew asR
+    - cp -r app/build/outputs $CIRCLE_ARTIFACTS

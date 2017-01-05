@@ -27,7 +27,6 @@ dependencies {
     //noinspection GradleDependency
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
-    // 一个强大的下拉框
-    compile 'in.srain.cube:ultra-ptr:1.0.11'
 
+    compile 'com.squareup.okhttp3:okhttp:3.5.0'
 }

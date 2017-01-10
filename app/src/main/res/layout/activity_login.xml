@@ -40,6 +40,7 @@
                 android:layout_height="@dimen/inputbox_height">
 
                 <TextView
+                    android:id="@+id/login_account_ip_textview"
                     android:textSize="@dimen/common_textsize_2"
                     android:textColor="@color/common_textcolor_1"
                     android:layout_width="wrap_content"
@@ -58,7 +59,7 @@
                     android:layout_marginLeft="@dimen/inputbox_content_margin"
                     android:hint="@string/login_ip_hint"
                     android:text="@string/login_default_ip_value"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:layout_weight="1.0" />
             </LinearLayout>
 

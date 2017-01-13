@@ -1,5 +1,6 @@
 package com.xiaoxuetu.shield.route.api;
 
+import com.xiaoxuetu.shield.route.model.CommandResult;
 import com.xiaoxuetu.shield.route.model.Device;
 
 import java.util.List;
@@ -16,9 +17,9 @@ public interface IRouteApi {
      * @param password 路由器登录密码
      * @return 是否登录成功
      */
-    boolean login(String ip, String password);
+    CommandResult login(String ip, String password);
 
-    List<Device> getDevices();
+    CommandResult getDevices();
 
 
 }

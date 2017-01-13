@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.xiaoxuetu.shield.common.widget.titlebar.TitleBar;
+import com.xiaoxuetu.shield.route.api.IRouteApi;
+import com.xiaoxuetu.shield.route.api.impl.TPLinkRouteApiImpl;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -28,6 +30,15 @@ public class LoginActivity extends AppCompatActivity {
 //        }
     }
 
+    private Runnable loginRunnable = new Runnable() {
+        @Override
+        public void run() {
+            IRouteApi routeApi = TPLinkRouteApiImpl.getInstance();
+            routeApi.login("192.168.0.1", "hyzhjjcjd");
+            routeApi.getDevices();
+        }
+    };
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -37,6 +48,10 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+                new Thread(loginRunnable).start();
+
+                // 进入到主界面
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }

@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void run() {
             IRouteApi routeApi = TPLinkRouteApiImpl.getInstance();
-            routeApi.login("192.168.0.1", "hyzhjjcjd");
+            routeApi.login("192.168.0.1", "xxxx");
             routeApi.getDevices();
         }
     };

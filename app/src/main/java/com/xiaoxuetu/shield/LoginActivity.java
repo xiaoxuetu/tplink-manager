@@ -30,19 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText hostEditText;
     private EditText passwordEditText;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        // 在4.0以后必须使用这种方式进行标题栏的隐藏
-//        ActionBar actionBar = getSupportActionBar();
-//
-//        if (actionBar != null) {
-//            actionBar.hide();
-//        }
-    }
-
     private Runnable loginRunnable = new Runnable() {
         @Override
         public void run() {
@@ -98,6 +85,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        // 在4.0以后必须使用这种方式进行标题栏的隐藏
+//        ActionBar actionBar = getSupportActionBar();
+//
+//        if (actionBar != null) {
+//            actionBar.hide();
+//        }
+    }
 
     @Override
     protected void onStart() {

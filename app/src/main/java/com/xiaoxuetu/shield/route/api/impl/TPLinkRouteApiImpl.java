@@ -119,10 +119,10 @@ public class TPLinkRouteApiImpl implements IRouteApi {
                 int i = 0;
                 List<Device> deviceList = new ArrayList<>();
                 while (i < (resultArray.length - 2)) {
-                    String deviceName = resultArray[i++];
-                    String macAddress = resultArray[i++];
-                    String ipAddress  = resultArray[i++];
-                    String validTime  = resultArray[i++];
+                    String deviceName = resultArray[i++].replaceAll("\n", "").replaceAll("\"", "");
+                    String macAddress = resultArray[i++].replaceAll("\n", "").replaceAll("\"", "");
+                    String ipAddress  = resultArray[i++].replaceAll("\n", "").replaceAll("\"", "");
+                    String validTime  = resultArray[i++].replaceAll("\n", "").replaceAll("\"", "");
 
                     Device device = new Device(deviceName, macAddress, ipAddress, validTime);
                     deviceList.add(device);

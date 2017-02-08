@@ -1,66 +1,106 @@
 package com.xiaoxuetu.shield;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.xiaoxuetu.shield.common.widget.dialog.MLTextView;
+import com.xiaoxuetu.shield.route.api.IRouteApi;
+import com.xiaoxuetu.shield.route.api.impl.TPLinkRouteApiImpl;
+import com.xiaoxuetu.shield.route.model.CommandResult;
+import com.xiaoxuetu.shield.route.model.Device;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String DEVICES_KEY = "devices";
+
+    private View emptyView;
     private ListView listView;
+
+    private Runnable deviceRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            IRouteApi routeApi = TPLinkRouteApiImpl.getInstance();
+            CommandResult commandResult = routeApi.getDevices();
+
+            Bundle deviceBundle = new Bundle();
+            deviceBundle.putParcelable(DEVICES_KEY, commandResult);
+            Message deviceMessage = new Message();
+            deviceMessage.setData(deviceBundle);
+            MainActivity.this.deviceRefreshHandler.sendMessage(deviceMessage);
+        }
+    };
+
+    private Handler deviceRefreshHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            CommandResult commandResult = msg.getData().getParcelable(DEVICES_KEY);
+
+            List<Device> deviceList = (List<Device>) commandResult.getData();
+
+            if (deviceList.isEmpty()) {
+                return;
+            }
+
+            List<Map<String, Object>> deviceData = covertToMapList(deviceList);
+
+            listView = (ListView) findViewById(R.id.client_list_view);
+            ListAdapter adapter = new ClientListAdapter(MainActivity.this, deviceData);
+            listView.setAdapter(adapter);
+
+            emptyView = findViewById(R.id.empty_view);
+            emptyView.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initListView();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new Thread(deviceRefreshRunnable).start();
     }
 
 
+    private List<Map<String, Object>> covertToMapList(List<Device> deviceList) {
 
-    private void initListView() {
-        listView = (ListView) findViewById(R.id.client_list_view);
-        List<Map<String, Object>> list = getMockData();
-        ListAdapter adapter = new ClientListAdapter(this, list);
-        listView.setAdapter(adapter);
+        List<Map<String, Object>> deviceMapList = new ArrayList<>();
 
+        for (Device device : deviceList) {
+            Map<String, Object> deviceMap = new HashMap<>();
+            deviceMap.put("client_icon", R.drawable.client_device_list_unknown);
 
-    }
-    private List<Map<String, Object>> getMockData() {
+            deviceMap.put("client_name", device.deviceName);
+            deviceMap.put("client_event", "2.4G连接");
+//            deviceMap.put("event_time", "2016-12-24 00:10:1" + i);
+//            deviceMap.put("client_net_speed", "1.9 KB/s");
 
-        List<Map<String, Object>> mockData = new ArrayList<>();
-
-        for (int i=0; i<5; i++) {
-            Map<String, Object> data1 = new HashMap<>();
-            if (i%2 == 0) {
-                data1.put("client_icon", R.drawable.client_device_list_camera);
-            } else {
-                data1.put("client_icon", R.drawable.client_device_list_unknown);
-            }
-            data1.put("client_name", "XiaoMi-" + i);
-            data1.put("client_event", "5G连接");
-            data1.put("event_time", "2016-12-24 00:10:1" + i);
-            data1.put("client_net_speed", "1.9 KB/s");
-
-            mockData.add(data1);
+            deviceMapList.add(deviceMap);
         }
 
-        return mockData;
+        return deviceMapList;
     }
 
     public class ClientListAdapter extends BaseAdapter {
@@ -103,11 +143,11 @@ public class MainActivity extends AppCompatActivity {
             ((MLTextView) convertView.findViewById(R.id.client_event))
                     .setText(currentDataMap.get("client_event").toString());
 
-            ((MLTextView) convertView.findViewById(R.id.event_time))
-                    .setText(currentDataMap.get("event_time").toString());
-
-            ((MLTextView) convertView.findViewById(R.id.client_net_speed))
-                    .setText(currentDataMap.get("client_net_speed").toString());
+//            ((MLTextView) convertView.findViewById(R.id.event_time))
+//                    .setText(currentDataMap.get("event_time").toString());
+//
+//            ((MLTextView) convertView.findViewById(R.id.client_net_speed))
+//                    .setText(currentDataMap.get("client_net_speed").toString());
 
 
 

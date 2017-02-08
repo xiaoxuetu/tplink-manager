@@ -1,10 +1,13 @@
 package com.xiaoxuetu.shield.route.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by kevin on 2017/1/14.
  */
 
-public class CommandResult {
+public class CommandResult implements Parcelable {
 
     public static final int CODE_FAILURE = 0;
 
@@ -15,6 +18,23 @@ public class CommandResult {
     private String message;
 
     private Object data;
+
+    protected CommandResult(Parcel in) {
+        code = in.readInt();
+        message = in.readString();
+    }
+
+    public static final Creator<CommandResult> CREATOR = new Creator<CommandResult>() {
+        @Override
+        public CommandResult createFromParcel(Parcel in) {
+            return new CommandResult(in);
+        }
+
+        @Override
+        public CommandResult[] newArray(int size) {
+            return new CommandResult[size];
+        }
+    };
 
     public int getCode() {
         return code;
@@ -77,5 +97,16 @@ public class CommandResult {
         CommandResult commandResult = failure(message);
         commandResult.setData(data);
         return commandResult;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(code);
+        dest.writeString(message);
     }
 }

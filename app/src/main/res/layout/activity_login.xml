@@ -52,7 +52,7 @@
                     android:textColor="@color/common_textcolor_2"
                     android:textColorHint="@color/common_textcolor_4"
                     android:gravity="center_vertical"
-                    android:id="@+id/login_account_password_account_editor"
+                    android:id="@+id/login_account_host_editor"
                     android:background="@null"
                     android:layout_width="0.0dip"
                     android:layout_height="fill_parent"

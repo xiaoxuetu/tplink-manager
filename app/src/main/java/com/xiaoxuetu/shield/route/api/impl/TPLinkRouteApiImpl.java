@@ -54,14 +54,21 @@ public class TPLinkRouteApiImpl implements IRouteApi {
         String auth = "Basic " + base64Encoding("admin:" + password);
         this.cookie = TextUtils.htmlEncode(auth).replaceAll(" ", "%20");
         Log.d(TAG, "cookie is " + this.cookie);
-        return CommandResult.success();
 
+        CommandResult commandResult = getDevices();
+
+        if (commandResult == null) {
+            return CommandResult.failure();
+        }
+        return CommandResult.success();
     }
 
     @Override
     public CommandResult getDevices() {
+        CommandResult commandResult = null;
+
         if (TextUtils.isEmpty(cookie)) {
-            return null;
+            return commandResult;
         }
 
         String url = "http://" + this.ip + "/userRpm/AssignedIpAddrListRpm.htm";
@@ -79,12 +86,16 @@ public class TPLinkRouteApiImpl implements IRouteApi {
             if (response.isSuccessful()) {
 
                 String resultHtml = response.body().string();
-                parseHtml(resultHtml);
+
+                if (!resultHtml.contains("You have no authority to access this device!")
+                        && !resultHtml.contains("loginBtn")) {
+                    commandResult = parseHtml(resultHtml);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return commandResult;
     }
 
 

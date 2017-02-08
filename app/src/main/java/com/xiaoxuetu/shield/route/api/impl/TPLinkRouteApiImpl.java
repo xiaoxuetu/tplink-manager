@@ -175,18 +175,48 @@ public class TPLinkRouteApiImpl implements IRouteApi {
         int i = 0;
 
         while (i < password.length()) {
-            int charCode1 = password.codePointAt(i++);
-            int charCode2 = password.codePointAt(i++);
-            int charCode3 = password.codePointAt(i++);
+            Integer charCode1 = null;
+            Integer charCode2 = null;
+            Integer charCode3 = null;
+            try {
+                charCode1 = password.codePointAt(i++);
+            } catch (IndexOutOfBoundsException exception){
+            }
+
+            try {
+                charCode2 = password.codePointAt(i++);
+            } catch (IndexOutOfBoundsException exception){
+            }
+
+            try {
+                charCode3 = password.codePointAt(i++);
+            } catch (IndexOutOfBoundsException exception){
+            }
+
 
             int enc1 = charCode1 >> 2;
-            int enc2 = ((charCode1 & 3) << 4) | (charCode2 >> 4);
-            int enc3 = ((charCode2 & 15) << 2) | (charCode3 >> 6);
-            int enc4 = charCode3 & 63;
 
-            if (Float.isNaN(charCode2)) {
+            int enc2 = ((charCode1 & 3) << 4);
+
+            if (charCode2 != null) {
+                enc2 = enc2 | (charCode2 >> 4);
+            }
+
+            Integer enc3 = null;
+            Integer enc4 = null;
+
+            if (charCode2 != null) {
+                enc3 = ((charCode2 & 15) << 2);
+            }
+
+            if (charCode3 != null) {
+                enc3 = enc3 | (charCode3 >> 6);
+                enc4 = charCode3 & 63;
+            }
+
+            if (charCode2 == null) {
                 enc3 = enc4 = 64;
-            } else if (Float.isNaN(charCode3)) {
+            } else if (charCode3 == null) {
                 enc4 = 64;
             }
 

@@ -19,6 +19,7 @@ import com.xiaoxuetu.shield.route.api.IRouteApi;
 import com.xiaoxuetu.shield.route.api.impl.TPLinkRouteApiImpl;
 import com.xiaoxuetu.shield.route.model.CommandResult;
 import com.xiaoxuetu.shield.route.model.Device;
+import com.xiaoxuetu.shield.utils.DeviceUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,8 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private static final String DEVICES_KEY = "devices";
+
+    private String currentDeviceMacAddress = "";
 
     private View emptyView;
     private ListView listView;
@@ -80,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        currentDeviceMacAddress = DeviceUtils.getMacAddress(getApplicationContext())
+                .toLowerCase();
         new Thread(deviceRefreshRunnable).start();
     }
 
@@ -93,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             deviceMap.put("client_icon", R.drawable.client_device_list_unknown);
 
             deviceMap.put("client_name", device.deviceName);
+            deviceMap.put("client_mac_address", device.macAddress);
             deviceMap.put("client_event", "2.4G连接");
 //            deviceMap.put("event_time", "2016-12-24 00:10:1" + i);
 //            deviceMap.put("client_net_speed", "1.9 KB/s");
@@ -102,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         return deviceMapList;
     }
+
 
     public class ClientListAdapter extends BaseAdapter {
 
@@ -129,6 +136,15 @@ public class MainActivity extends AppCompatActivity {
             return 0;
         }
 
+        private boolean isMacAddressTheSame(Map<String, Object> currentDataMap) {
+            String macAddress = currentDataMap.get("client_mac_address")
+                    .toString()
+                    .toLowerCase()
+                    .replaceAll("-", ":");
+
+            return macAddress.equals(MainActivity.this.currentDeviceMacAddress);
+        }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             Map<String, Object> currentDataMap = dataList.get(position);
@@ -136,6 +152,11 @@ public class MainActivity extends AppCompatActivity {
             // 设置客户端图片
             ((ImageView) convertView.findViewById(R.id.client_icon))
                     .setImageResource((int)(currentDataMap.get("client_icon")));
+
+            if (!isMacAddressTheSame(currentDataMap)) {
+                convertView.findViewById(R.id.admin_icon)
+                        .setVisibility(View.INVISIBLE);
+            }
 
             ((MLTextView) convertView.findViewById(R.id.client_name))
                     .setText(currentDataMap.get("client_name").toString());

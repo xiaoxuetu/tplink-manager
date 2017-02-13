@@ -3,15 +3,10 @@ package com.xiaoxuetu.shield.common.widget.titlebar;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.xiaoxuetu.shield.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by kevin on 16/9/1.

@@ -8,8 +8,6 @@ import com.xiaoxuetu.shield.route.model.CommonResult;
 import com.xiaoxuetu.shield.route.model.Device;
 import com.xiaoxuetu.shield.route.model.Route;
 
-import org.jsoup.Jsoup;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

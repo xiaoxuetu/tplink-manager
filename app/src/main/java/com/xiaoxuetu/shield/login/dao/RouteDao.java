@@ -74,7 +74,10 @@ public class RouteDao {
                 route.isOnFocus = true;
             }
         }
-        cursor.close();
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
         return route;
     }
 
@@ -103,7 +106,10 @@ public class RouteDao {
                 route.isOnFocus = true;
             }
         }
-        cursor.close();
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
         return route;
     }
 

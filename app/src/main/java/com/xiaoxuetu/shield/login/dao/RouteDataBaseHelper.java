@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.xiaoxuetu.shield.route.model.Route;
-
 /**
  * Created by kevin on 2017/2/9.
  */

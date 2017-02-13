@@ -10,15 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.xiaoxuetu.shield.common.widget.dialog.MLTextView;
+import com.xiaoxuetu.shield.login.dao.RouteDao;
 import com.xiaoxuetu.shield.route.api.IRouteApi;
 import com.xiaoxuetu.shield.route.api.impl.TPLinkRouteApiImpl;
-import com.xiaoxuetu.shield.route.model.CommandResult;
+import com.xiaoxuetu.shield.route.model.CommonResult;
 import com.xiaoxuetu.shield.route.model.Device;
+import com.xiaoxuetu.shield.route.model.Route;
 import com.xiaoxuetu.shield.utils.DeviceUtils;
 
 import java.util.ArrayList;
@@ -38,11 +39,16 @@ public class MainActivity extends AppCompatActivity {
     private Runnable deviceRefreshRunnable = new Runnable() {
         @Override
         public void run() {
+            RouteDao routeDao = new RouteDao(getApplicationContext());
+            Route route = routeDao.findOnFocusRoute();
+
             IRouteApi routeApi = TPLinkRouteApiImpl.getInstance();
-            CommandResult commandResult = routeApi.getDevices();
+            routeApi.login(route.ip, route.password);
+
+            CommonResult commonResult = routeApi.getDevices();
 
             Bundle deviceBundle = new Bundle();
-            deviceBundle.putParcelable(DEVICES_KEY, commandResult);
+            deviceBundle.putParcelable(DEVICES_KEY, commonResult);
             Message deviceMessage = new Message();
             deviceMessage.setData(deviceBundle);
             MainActivity.this.deviceRefreshHandler.sendMessage(deviceMessage);
@@ -54,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            CommandResult commandResult = msg.getData().getParcelable(DEVICES_KEY);
+            CommonResult commonResult = msg.getData().getParcelable(DEVICES_KEY);
 
-            List<Device> deviceList = (List<Device>) commandResult.getData();
+            List<Device> deviceList = (List<Device>) commonResult.getData();
 
             if (deviceList.isEmpty()) {
                 return;
@@ -169,9 +175,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //            ((MLTextView) convertView.findViewById(R.id.client_net_speed))
 //                    .setText(currentDataMap.get("client_net_speed").toString());
-
-
-
             return convertView;
         }
     }

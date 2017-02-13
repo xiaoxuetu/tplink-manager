@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.xiaoxuetu.shield.login.LoginActivity;
+
 public class SplashActivity extends AppCompatActivity {
 
     private View loginButton;

@@ -1,34 +1,34 @@
-package com.xiaoxuetu.shield;
+package com.xiaoxuetu.shield.login;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.xiaoxuetu.shield.common.widget.titlebar.TitleBar;
+import com.xiaoxuetu.shield.MainActivity;
+import com.xiaoxuetu.shield.R;
+import com.xiaoxuetu.shield.login.dao.RouteDao;
 import com.xiaoxuetu.shield.route.api.IRouteApi;
 import com.xiaoxuetu.shield.route.api.impl.TPLinkRouteApiImpl;
-import com.xiaoxuetu.shield.route.model.CommandResult;
+import com.xiaoxuetu.shield.route.model.CommonResult;
+import com.xiaoxuetu.shield.route.model.Route;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String IS_LOGIN_SUCCESS_KEY = "is_login_success";
     private static final String LOGIN_MSG_KEY = "login_msg";
+    private static final String ROUTE_INFO_KEY = "route_info";
 
     private EditText hostEditText;
     private EditText passwordEditText;
+
+    private String host;
+    private String password;
 
     private Runnable loginRunnable = new Runnable() {
         @Override
@@ -40,8 +40,9 @@ public class LoginActivity extends AppCompatActivity {
             boolean isLoginSuccess = false;
 
 
-            String host = hostEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
+            host = hostEditText.getText().toString();
+            password = passwordEditText.getText().toString();
+            CommonResult commonResult = null;
 
             if (TextUtils.isEmpty(host)) {
                 msg = "IP地址不能为空";
@@ -49,19 +50,18 @@ public class LoginActivity extends AppCompatActivity {
                 msg = "密码不能为空";
             } else {
                 IRouteApi routeApi = TPLinkRouteApiImpl.getInstance();
-                CommandResult commandResult = routeApi.login(host, password);
+                commonResult = routeApi.login(host, password);
 
-                if (commandResult.getCode() == CommandResult.CODE_FAILURE) {
+                if (commonResult.getCode() == CommonResult.CODE_FAILURE) {
                     msg = "密码错误";
                 } else {
                     isLoginSuccess = true;
                 }
             }
 
-
-
             isLoginSuccessBundle.putBoolean(IS_LOGIN_SUCCESS_KEY, isLoginSuccess);
             isLoginSuccessBundle.putString(LOGIN_MSG_KEY, msg);
+            isLoginSuccessBundle.putParcelable(ROUTE_INFO_KEY, commonResult);
             message.setData(isLoginSuccessBundle);
             LoginActivity.this.loginResultHandler.sendMessage(message);
         }
@@ -76,13 +76,45 @@ public class LoginActivity extends AppCompatActivity {
             boolean isLoginSuccess = msg.getData().getBoolean(IS_LOGIN_SUCCESS_KEY);
             String msgStr = msg.getData().getString(LOGIN_MSG_KEY);
 
-            if (isLoginSuccess) {
-                // 进入到主界面
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-            } else {
+            if (!isLoginSuccess) {
                 Toast.makeText(LoginActivity.this, msgStr, Toast.LENGTH_LONG).show();
+                return;
             }
+
+            CommonResult commonResult = msg.getData().getParcelable(ROUTE_INFO_KEY);
+            boolean isSaveSuccess = saveRouteInfo(commonResult);
+
+            if (!isSaveSuccess) {
+                Toast.makeText(LoginActivity.this, "路由器信息获取失败，请重新登录", Toast.LENGTH_LONG).show();
+                return;
+            }
+            // 进入到主界面
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+
+        private boolean saveRouteInfo(CommonResult commonResult) {
+
+            if (commonResult == null ||
+                    commonResult.getCode() == CommonResult.CODE_FAILURE) {
+                return false;
+            }
+
+            Route route = (Route) commonResult.getData();
+
+            route.password = password;
+            route.isOnFocus = true;
+
+            RouteDao routeDao = new RouteDao(getApplicationContext());
+            routeDao.updateAllRouteToUnFocus();
+            if (routeDao.isRouteExists(route.macAddress)) {
+                Route routeTemp = routeDao.findByMacAddress(route.macAddress);
+                route.id = routeTemp.id;
+                routeDao.update(route);
+            } else {
+                routeDao.save(route);
+            }
+            return true;
         }
     };
 

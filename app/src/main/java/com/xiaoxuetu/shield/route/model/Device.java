@@ -17,8 +17,7 @@ public class Device {
     public String validTime;
 
 
-    public Device() {
-    }
+    public Device() {}
 
     public Device(String deviceName, String macAddress, String ipAddress, String validTime) {
         this.deviceName = deviceName;

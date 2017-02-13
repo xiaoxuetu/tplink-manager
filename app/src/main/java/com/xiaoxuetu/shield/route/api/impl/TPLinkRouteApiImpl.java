@@ -2,17 +2,17 @@ package com.xiaoxuetu.shield.route.api.impl;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 
 import com.xiaoxuetu.shield.route.api.IRouteApi;
-import com.xiaoxuetu.shield.route.model.CommandResult;
+import com.xiaoxuetu.shield.route.model.CommonResult;
 import com.xiaoxuetu.shield.route.model.Device;
+import com.xiaoxuetu.shield.route.model.Route;
+
+import org.jsoup.Jsoup;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,7 +47,7 @@ public class TPLinkRouteApiImpl implements IRouteApi {
     }
 
     @Override
-    public CommandResult login(String ip, String password) {
+    public CommonResult login(String ip, String password) {
         this.ip = ip;
         this.password = password;
 
@@ -55,23 +55,23 @@ public class TPLinkRouteApiImpl implements IRouteApi {
         this.cookie = TextUtils.htmlEncode(auth).replaceAll(" ", "%20");
         Log.d(TAG, "cookie is " + this.cookie);
 
-        CommandResult commandResult = getDevices();
+        CommonResult commonResult = getRouteInfo();
 
-        if (commandResult == null) {
-            return CommandResult.failure();
+        if (commonResult == null) {
+            return CommonResult.failure();
         }
-        return CommandResult.success();
+        return commonResult;
     }
 
     @Override
-    public CommandResult getDevices() {
-        CommandResult commandResult = null;
+    public CommonResult getRouteInfo() {
+        CommonResult commonResult = null;
 
         if (TextUtils.isEmpty(cookie)) {
-            return commandResult;
+            return null;
         }
 
-        String url = "http://" + this.ip + "/userRpm/AssignedIpAddrListRpm.htm";
+        String url = "http://" + this.ip + "/userRpm/StatusRpm.htm";
         String cookieTemp = "Authorization=" + cookie + "; ChgPwdSubTag=";
         Request request = new Request.Builder()
                 .addHeader("Cookie", cookieTemp)
@@ -87,20 +87,93 @@ public class TPLinkRouteApiImpl implements IRouteApi {
 
                 String resultHtml = response.body().string();
 
-                if (!resultHtml.contains("You have no authority to access this device!")
-                        && !resultHtml.contains("loginBtn")) {
-                    commandResult = parseHtml(resultHtml);
+                if (isLoginSuccess(resultHtml)) {
+                    commonResult = parseHtmlForRouteInfo(resultHtml);
+                }
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return commonResult;
+    }
+
+    @Override
+    public CommonResult getDevices() {
+        CommonResult commonResult = null;
+
+        if (TextUtils.isEmpty(cookie)) {
+            return commonResult;
+        }
+
+        String url = "http://" + this.ip + "/userRpm/AssignedIpAddrListRpm.htm";
+        String cookieTemp = "Authorization=" + cookie + "; ChgPwdSubTag=";
+
+        Request request = new Request.Builder()
+                .addHeader("Cookie", cookieTemp)
+                .addHeader("Referer", "http://" + ip +"/userRpm/MenuRpm.htm")
+                .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36")
+                .url(url)
+                .build();
+
+        try {
+            okhttp3.Response response = okHttpClient.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+
+                String resultHtml = response.body().string();
+
+                if (isLoginSuccess(resultHtml)) {
+                    commonResult = parseHtmlForGetDevices(resultHtml);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return commandResult;
+        return commonResult;
     }
 
+    private boolean isLoginSuccess(String resultHtml) {
+        if (resultHtml.contains("You have no authority to access this device!")
+                || resultHtml.contains("loginBtn")) {
+            return false;
+        }
+        return true;
+    }
 
-    private CommandResult parseHtml(String resultHtml) {
-        CommandResult commandResult;
+    private CommonResult parseHtmlForRouteInfo(String resultHtml) {
+        CommonResult commonResult = null;
+
+        String pattern = "var wlanPara=new Array[-(\\s\\w\",.:);]+";
+        Pattern r = Pattern.compile(pattern);
+        Matcher matcher = r.matcher(resultHtml);
+
+        if (matcher.find()) {
+            String result = matcher.group();
+            result = result.replace("var wlanPara=new Array(", "");
+            String[] resultArray = result.split(",");
+            Log.d(TAG, Arrays.toString(resultArray));
+
+            if (resultArray.length != 13) {
+                commonResult = CommonResult.failure("列表获取失败");
+            } else {
+                String wifiName = resultArray[1].replaceAll("\n", "")
+                        .replaceAll("\"", "");
+                String macAddress = resultArray[4].replaceAll("\n", "")
+                        .replaceAll("\"", "")
+                        .replaceAll("-", ":")
+                        .toLowerCase();
+                String ip = resultArray[5].replaceAll("\n", "")
+                        .replaceAll("\"", "");
+
+                Route route = new Route("", wifiName, macAddress, false, ip, "");
+                commonResult = CommonResult.success("解析成功", route);
+            }
+        }
+        return commonResult;
+    }
+
+    private CommonResult parseHtmlForGetDevices(String resultHtml) {
+        CommonResult commonResult;
         String pattern = "var DHCPDynList=new Array[-(\\s\\w\",.:);]+";
         Pattern r = Pattern.compile(pattern);
         Matcher matcher = r.matcher(resultHtml);
@@ -114,7 +187,7 @@ public class TPLinkRouteApiImpl implements IRouteApi {
 
             //
             if ((resultArray.length - 2) < 1) {
-                commandResult = CommandResult.success();
+                commonResult = CommonResult.success();
             } else if ((resultArray.length - 2) % 4 == 0) {
                 int i = 0;
                 List<Device> deviceList = new ArrayList<>();
@@ -128,15 +201,15 @@ public class TPLinkRouteApiImpl implements IRouteApi {
                     deviceList.add(device);
                 }
                 Log.d(TAG, deviceList.toString());
-                commandResult = CommandResult.success("解析成功", deviceList);
+                commonResult = CommonResult.success("解析成功", deviceList);
             } else {
-                commandResult = CommandResult.failure("解析错误，没有获取到设备列表");
+                commonResult = CommonResult.failure("解析错误，没有获取到设备列表");
             }
         } else {
-            commandResult = CommandResult.failure("解析失败，没有获取到设备列表");
+            commonResult = CommonResult.failure("解析失败，没有获取到设备列表");
         }
 
-        return commandResult;
+        return commonResult;
 
     }
 

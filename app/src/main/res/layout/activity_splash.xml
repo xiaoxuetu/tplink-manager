@@ -6,12 +6,21 @@
     android:background="@drawable/splash"
     tools:context=".SplashActivity">
 
-    <ImageView
+    <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_marginTop="140.0dip"-->
+        <!--android:src="@drawable/common_logo_frame_15"/>-->
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="140.0dip"
-        android:src="@drawable/common_logo_frame_15"/>
+        android:layout_marginTop="140.0dp"
+        android:textColor="@color/white_50_transparent"
+        android:textSize="70.0dp"
+        android:text="TP-LINK"/>
 
 
     <LinearLayout
@@ -23,19 +32,19 @@
         android:paddingLeft="30.0dip"
         android:paddingRight="30.0dip">
 
-        <TextView
-            style="@style/AppTheme.Splash_TextView"
-            android:text="@string/splash_register" />
+        <!--<TextView-->
+            <!--style="@style/AppTheme.Splash_TextView"-->
+            <!--android:text="@string/splash_register" />-->
 
 
-        <TextView
-            style="@style/AppTheme.Splash_TextView"
-            android:text="@string/splash_login" />
+        <!--<TextView-->
+            <!--style="@style/AppTheme.Splash_TextView"-->
+            <!--android:text="@string/splash_login" />-->
 
-        <TextView
-            android:id="@+id/button_add_new_router"
-            style="@style/AppTheme.Splash_TextView"
-            android:text="@string/splash_add_new_router" />
+        <!--<TextView-->
+            <!--android:id="@+id/button_add_new_router"-->
+            <!--style="@style/AppTheme.Splash_TextView"-->
+            <!--android:text="@string/splash_add_new_router" />-->
 
 
         <TextView

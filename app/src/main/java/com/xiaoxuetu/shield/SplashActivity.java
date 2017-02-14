@@ -1,7 +1,10 @@
 package com.xiaoxuetu.shield;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,6 +14,8 @@ import com.xiaoxuetu.shield.login.LoginActivity;
 public class SplashActivity extends AppCompatActivity {
 
     private View loginButton;
+
+    private static final String FLAG_FISRT_START = "flat_first_start";
 
 
     @Override
@@ -32,21 +37,49 @@ public class SplashActivity extends AppCompatActivity {
 //            actionBar.hide();
 //        }
 
-        initButton();
+//        initButton();
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-
-    private void initButton() {
-        loginButton = findViewById(R.id.button_add_new_router);
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        // 延迟两秒钟再进行跳转.sendEmptyMessageDelayed(0,1000)
+        new Handler(new Handler.Callback() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            public boolean handleMessage(Message msg) {
+                SharedPreferences sharedPreferences = getSharedPreferences("flat", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                boolean isFisrtStart = sharedPreferences.getBoolean(FLAG_FISRT_START, true);
+
+                Intent intent;
+                if (isFisrtStart) {
+                    intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    editor.putBoolean(FLAG_FISRT_START, false);
+                    editor.commit();
+                } else {
+                    intent = new Intent(SplashActivity.this, MainActivity.class);
+                }
                 startActivity(intent);
+                return false;
             }
-        });
+        }).sendEmptyMessageDelayed(0, 5000);
     }
+
+
+
+
+//    private void initButton() {
+//        loginButton = findViewById(R.id.button_add_new_router);
+//
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//    }
 }

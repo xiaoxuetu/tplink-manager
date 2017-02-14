@@ -65,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 return false;
             }
-        }).sendEmptyMessageDelayed(0, 5000);
+        }).sendEmptyMessageDelayed(0, 500);
     }
 
 

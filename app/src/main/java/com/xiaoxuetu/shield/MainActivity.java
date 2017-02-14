@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.xiaoxuetu.shield.common.widget.dialog.MLTextView;
 import com.xiaoxuetu.shield.login.dao.RouteDao;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private static final String DEVICES_KEY = "devices";
+    private static final String ROUTE_KEY = "route";
 
     private String currentDeviceMacAddress = "";
 
@@ -45,10 +47,13 @@ public class MainActivity extends AppCompatActivity {
             IRouteApi routeApi = TPLinkRouteApiImpl.getInstance();
             routeApi.login(route.ip, route.password);
 
-            CommonResult commonResult = routeApi.getDevices();
+            CommonResult routeCommonResult = routeApi.getRouteInfo();
+            CommonResult devicesCommonResult = routeApi.getDevices();
 
             Bundle deviceBundle = new Bundle();
-            deviceBundle.putParcelable(DEVICES_KEY, commonResult);
+            deviceBundle.putParcelable(ROUTE_KEY, routeCommonResult);
+            deviceBundle.putParcelable(DEVICES_KEY, devicesCommonResult);
+
             Message deviceMessage = new Message();
             deviceMessage.setData(deviceBundle);
             MainActivity.this.deviceRefreshHandler.sendMessage(deviceMessage);
@@ -60,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            CommonResult commonResult = msg.getData().getParcelable(DEVICES_KEY);
+            CommonResult devicesCommonResult = msg.getData().getParcelable(DEVICES_KEY);
 
-            List<Device> deviceList = (List<Device>) commonResult.getData();
+            List<Device> deviceList = (List<Device>) devicesCommonResult.getData();
 
             if (deviceList.isEmpty()) {
                 return;
@@ -77,6 +82,15 @@ public class MainActivity extends AppCompatActivity {
             emptyView = findViewById(R.id.empty_view);
             emptyView.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
+
+
+            CommonResult routeCommonResult = msg.getData().getParcelable(ROUTE_KEY);
+            Route route = (Route) routeCommonResult.getData();
+            String wifiName = route.wifiName;
+
+            TextView routeNameTextView = (TextView) findViewById(R.id.router_name);
+            routeNameTextView.setText(wifiName);
+
         }
     };
 

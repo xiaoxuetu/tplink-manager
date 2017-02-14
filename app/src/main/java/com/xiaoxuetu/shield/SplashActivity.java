@@ -52,10 +52,10 @@ public class SplashActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("flag", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                boolean isFisrtStart = sharedPreferences.getBoolean(FLAG_FISRT_START, true);
+                boolean isFirstStart = sharedPreferences.getBoolean(FLAG_FISRT_START, true);
 
                 Intent intent;
-                if (isFisrtStart) {
+                if (isFirstStart) {
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
                     editor.putBoolean(FLAG_FISRT_START, false);
                     editor.commit();

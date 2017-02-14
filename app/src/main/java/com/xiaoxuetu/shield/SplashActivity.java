@@ -15,7 +15,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private View loginButton;
 
-    private static final String FLAG_FISRT_START = "flat_first_start";
+    private static final String FLAG_FISRT_START = "flag_first_start";
 
 
     @Override
@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                SharedPreferences sharedPreferences = getSharedPreferences("flat", MODE_PRIVATE);
+                SharedPreferences sharedPreferences = getSharedPreferences("flag", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 boolean isFisrtStart = sharedPreferences.getBoolean(FLAG_FISRT_START, true);

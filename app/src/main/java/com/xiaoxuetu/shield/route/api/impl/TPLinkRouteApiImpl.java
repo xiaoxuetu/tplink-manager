@@ -11,7 +11,9 @@ import com.xiaoxuetu.shield.route.model.Route;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,8 @@ import okhttp3.Request;
 
 /**
  * Created by kevin on 2017/1/10.
+ *
+ * TODO: 代码优化
  */
 
 public class TPLinkRouteApiImpl implements IRouteApi {
@@ -130,6 +134,8 @@ public class TPLinkRouteApiImpl implements IRouteApi {
         return commonResult;
     }
 
+
+
     private boolean isLoginSuccess(String resultHtml) {
         if (resultHtml.contains("You have no authority to access this device!")
                 || resultHtml.contains("loginBtn")) {
@@ -170,7 +176,108 @@ public class TPLinkRouteApiImpl implements IRouteApi {
         return commonResult;
     }
 
+    private List<String> getOnlineDevicesMacAddress() {
+        List<String> macList = new ArrayList<>();
+
+        if (TextUtils.isEmpty(cookie)) {
+            return macList;
+        }
+
+        String summaryHtml = requestWlanStation(1);
+        Map<String, Integer> summaryMap = parseHtmlForWlanStateSummary(summaryHtml);
+        int deviceNumber = summaryMap.get("device_number");
+        int perPageNumber = summaryMap.get("per_page_number");
+        int totalPageNum = (deviceNumber  +  perPageNumber  - 1) / perPageNumber;
+
+        for (int i=1; i<= totalPageNum; i++) {
+            String resultHtml = requestWlanStation(i);
+            macList.addAll(parseHtmlForOnlineDeviceMacAddress(resultHtml));
+        }
+        return macList;
+    }
+
+    private String requestWlanStation(int i) {
+        String url = "http://" + this.ip + "/userRpm/WlanStationRpm.htm?Page=" + i;
+        String cookieTemp = "Authorization=" + cookie + "; ChgPwdSubTag=";
+
+        Request request = new Request.Builder()
+                .addHeader("Cookie", cookieTemp)
+                .addHeader("Referer", "http://" + ip +"/userRpm/MenuRpm.htm")
+                .addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36")
+                .url(url)
+                .build();
+        String resultHtml = "";
+        try {
+            okhttp3.Response response = okHttpClient.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                resultHtml = response.body().string();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return resultHtml;
+    }
+
+    private Map<String, Integer> parseHtmlForWlanStateSummary(String resultHtml) {
+        String pattern = "var wlanHostPara=new Array[-(\\s\\w\",.:);]+";
+        Pattern r = Pattern.compile(pattern);
+        Matcher matcher = r.matcher(resultHtml);
+
+        if (matcher.find()) {
+            String result = matcher.group();
+            result = result.replace("var wlanHostPara=new Array(", "");
+            String[] resultArray = result.split(",");
+            Log.d(TAG, Arrays.toString(resultArray));
+
+            if (resultArray.length < 3) {
+                return null;
+            } else {
+                int deviceNumber = Integer.parseInt(resultArray[0].replaceAll("\n", "").replaceAll("\"", ""));
+                int perPageNumber = Integer.parseInt(resultArray[2].replaceAll("\n", "").replaceAll("\"", ""));
+
+                Map<String, Integer> summaryMap = new HashMap<>();
+                summaryMap.put("device_number", deviceNumber);
+                summaryMap.put("per_page_number", perPageNumber);
+                return summaryMap;
+            }
+        }
+        return null;
+    }
+
+    private List<String> parseHtmlForOnlineDeviceMacAddress(String resultHtml) {
+        String pattern = "var hostList=new Array[-(\\s\\w\",.:);]+";
+        Pattern r = Pattern.compile(pattern);
+        Matcher matcher = r.matcher(resultHtml);
+
+        List<String> macList = new ArrayList<>();
+
+        if (matcher.find()) {
+
+            String result = matcher.group();
+            result = result.replace("var hostList=new Array(", "");
+            String[] resultArray = result.split(",");
+            Log.d(TAG, Arrays.toString(resultArray));
+
+
+            if ((resultArray.length - 2) < 1) {
+
+            } else if ((resultArray.length - 2) % 7 == 0) {
+                int i = 0;
+                while (i < (resultArray.length - 2)) {
+                    String macAddress = resultArray[i].replaceAll("\n", "").replaceAll("\"", "");
+                    i = i + 7;
+                    macList.add(macAddress);
+                }
+            }
+        }
+
+        return macList;
+    }
+
+
     private CommonResult parseHtmlForGetDevices(String resultHtml) {
+        List<String> macList = getOnlineDevicesMacAddress();
         CommonResult commonResult;
         String pattern = "var DHCPDynList=new Array[-(\\s\\w\",.:);]+";
         Pattern r = Pattern.compile(pattern);
@@ -183,7 +290,7 @@ public class TPLinkRouteApiImpl implements IRouteApi {
             String[] resultArray = result.split(",");
             Log.d(TAG, Arrays.toString(resultArray));
 
-            //
+
             if ((resultArray.length - 2) < 1) {
                 commonResult = CommonResult.success();
             } else if ((resultArray.length - 2) % 4 == 0) {
@@ -196,7 +303,10 @@ public class TPLinkRouteApiImpl implements IRouteApi {
                     String validTime  = resultArray[i++].replaceAll("\n", "").replaceAll("\"", "");
 
                     Device device = new Device(deviceName, macAddress, ipAddress, validTime);
-                    deviceList.add(device);
+
+                    if (macList.contains(macAddress)) {
+                        deviceList.add(device);
+                    }
                 }
                 Log.d(TAG, deviceList.toString());
                 commonResult = CommonResult.success("解析成功", deviceList);

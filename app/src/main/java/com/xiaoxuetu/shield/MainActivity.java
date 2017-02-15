@@ -31,6 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * TODO: MAC 地址格式的统一
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String DEVICES_KEY = "devices";

@@ -171,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
             System.exit(0);// 使虚拟机停止运行并退出程序
         } else {
             isExit = true;
-            Toast.makeText(MainActivity.this, "再按一次退出哦", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "再按一次退出哦", Toast.LENGTH_SHORT).show();
             mHandler.sendEmptyMessageDelayed(0, 3000);// 3秒后发送消息
         }
     }

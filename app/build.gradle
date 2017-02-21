@@ -34,7 +34,5 @@ dependencies {
 
     //noinspection GradleDependency
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.squareup.okhttp3:okhttp:3.5.0'
-    compile 'org.jsoup:jsoup:1.10.2'
     compile project(path: ':route_api')
 }

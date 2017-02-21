@@ -2,10 +2,12 @@ package com.xiaoxuetu.shield;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +19,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.xiaoxuetu.route.RouteApi;
+import com.xiaoxuetu.route.RouteApiFactory;
+import com.xiaoxuetu.route.RouteModel;
+import com.xiaoxuetu.route.model.CommonResult;
+import com.xiaoxuetu.route.model.Device;
+import com.xiaoxuetu.route.model.Route;
 import com.xiaoxuetu.shield.common.widget.dialog.MLTextView;
+import com.xiaoxuetu.shield.login.LoginActivity;
 import com.xiaoxuetu.shield.login.dao.RouteDao;
-import com.xiaoxuetu.shield.route.api.IRouteApi;
-import com.xiaoxuetu.shield.route.api.impl.TPLinkRouteApiImpl;
-import com.xiaoxuetu.shield.route.model.CommonResult;
-import com.xiaoxuetu.shield.route.model.Device;
-import com.xiaoxuetu.shield.route.model.Route;
 import com.xiaoxuetu.shield.utils.DeviceUtils;
 
 import java.util.ArrayList;
@@ -36,6 +40,7 @@ import java.util.Map;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String LOGIN_RESULT_KEY = "login_result";
     private static final String DEVICES_KEY = "devices";
     private static final String ROUTE_KEY = "route";
 
@@ -50,15 +55,19 @@ public class MainActivity extends AppCompatActivity {
             RouteDao routeDao = new RouteDao(getApplicationContext());
             Route route = routeDao.findOnFocusRoute();
 
-            IRouteApi routeApi = TPLinkRouteApiImpl.getInstance();
-            routeApi.login(route.ip, route.password);
-
-            CommonResult routeCommonResult = routeApi.getRouteInfo();
-            CommonResult devicesCommonResult = routeApi.getDevices();
-
+            RouteApi routeApi = RouteApiFactory.createRoute(RouteModel.TPLink.WR842N);
+            CommonResult loginResult = routeApi.login(route.ip, route.password);
             Bundle deviceBundle = new Bundle();
-            deviceBundle.putParcelable(ROUTE_KEY, routeCommonResult);
-            deviceBundle.putParcelable(DEVICES_KEY, devicesCommonResult);
+
+            if (loginResult.isSuccess()) {
+                deviceBundle.putBoolean(LOGIN_RESULT_KEY, true);
+                CommonResult routeCommonResult = routeApi.getRoute();
+                CommonResult devicesCommonResult = routeApi.getOnlineDevices();
+                deviceBundle.putSerializable(ROUTE_KEY, routeCommonResult);
+                deviceBundle.putSerializable(DEVICES_KEY, devicesCommonResult);
+            } else {
+                deviceBundle.putBoolean(LOGIN_RESULT_KEY, false);
+            }
 
             Message deviceMessage = new Message();
             deviceMessage.setData(deviceBundle);
@@ -71,31 +80,49 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            CommonResult devicesCommonResult = msg.getData().getParcelable(DEVICES_KEY);
+            boolean isLoginSuccess = msg.getData().getBoolean(LOGIN_RESULT_KEY);
 
-            List<Device> deviceList = (List<Device>) devicesCommonResult.getData();
+            if (!isLoginSuccess) {
+                Toast.makeText(MainActivity.this, "登录失败，请重新登录", Toast.LENGTH_LONG).show();
 
-            if (deviceList.isEmpty()) {
-                return;
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
 
-            List<Map<String, Object>> deviceData = covertToMapList(deviceList);
 
-            listView = (ListView) findViewById(R.id.client_list_view);
-            ListAdapter adapter = new ClientListAdapter(MainActivity.this, deviceData);
-            listView.setAdapter(adapter);
+            CommonResult devicesCommonResult = (CommonResult) msg.getData().getSerializable(DEVICES_KEY);
 
-            emptyView = findViewById(R.id.empty_view);
-            emptyView.setVisibility(View.GONE);
-            listView.setVisibility(View.VISIBLE);
+            if (devicesCommonResult.isFailure()) {
+                Toast.makeText(MainActivity.this, "获取设备列表失败，请手动刷新", Toast.LENGTH_LONG).show();
+            } else {
+                List<Device> deviceList = (List<Device>) devicesCommonResult.getData();
+                if (deviceList.isEmpty()) {
+                    return;
+                }
 
+                List<Map<String, Object>> deviceData = covertToMapList(deviceList);
 
-            CommonResult routeCommonResult = msg.getData().getParcelable(ROUTE_KEY);
-            Route route = (Route) routeCommonResult.getData();
-            String wifiName = route.wifiName;
+                listView = (ListView) findViewById(R.id.client_list_view);
+                ListAdapter adapter = new ClientListAdapter(MainActivity.this, deviceData);
+                listView.setAdapter(adapter);
 
-            TextView routeNameTextView = (TextView) findViewById(R.id.router_name);
-            routeNameTextView.setText(wifiName);
+                emptyView = findViewById(R.id.empty_view);
+                emptyView.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+
+            }
+
+            CommonResult routeCommonResult = (CommonResult) msg.getData().getSerializable(ROUTE_KEY);
+
+            if (routeCommonResult.isFailure()) {
+                Toast.makeText(MainActivity.this, "获取路由信息失败，请手动刷新", Toast.LENGTH_LONG).show();
+            } else {
+                Route route = (Route) routeCommonResult.getData();
+                String wifiName = route.wifiName;
+
+                TextView routeNameTextView = (TextView) findViewById(R.id.router_name);
+                routeNameTextView.setText(wifiName);
+            }
 
         }
     };
@@ -112,6 +139,11 @@ public class MainActivity extends AppCompatActivity {
         currentDeviceMacAddress = DeviceUtils.getMacAddress(getApplicationContext())
                 .toLowerCase();
         new Thread(deviceRefreshRunnable).start();
+        SharedPreferences sharedPreferences = getSharedPreferences("flag", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putBoolean(SplashActivity.FLAG_FISRT_START, false);
+        editor.commit();
     }
 
 

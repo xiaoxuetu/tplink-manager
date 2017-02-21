@@ -15,7 +15,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private View loginButton;
 
-    private static final String FLAG_FISRT_START = "flag_first_start";
+    public static final String FLAG_FISRT_START = "flag_first_start";
 
 
     @Override
@@ -57,8 +57,6 @@ public class SplashActivity extends AppCompatActivity {
                 Intent intent;
                 if (isFirstStart) {
                     intent = new Intent(SplashActivity.this, LoginActivity.class);
-                    editor.putBoolean(FLAG_FISRT_START, false);
-                    editor.commit();
                 } else {
                     intent = new Intent(SplashActivity.this, MainActivity.class);
                 }

@@ -5,7 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.xiaoxuetu.shield.route.model.Route;
+import com.xiaoxuetu.route.model.Route;
+
 
 /**
  * Created by kevin on 2017/2/10.
@@ -25,7 +26,10 @@ public class RouteDao {
         RouteDataBaseHelper dbHelper = RouteDataBaseHelper.getInstance(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues contentValues = changeObjectToContentValues(route);
-        return db.insert(TABLE_NAME, null, contentValues);
+        long id = db.insert(TABLE_NAME, null, contentValues);
+        db.close();
+        dbHelper.close();
+        return id;
     }
 
     public void updateAllRouteToUnFocus() {
@@ -34,6 +38,8 @@ public class RouteDao {
         ContentValues values = new ContentValues();
         values.put("on_focus", 0);
         db.update(TABLE_NAME, values, "on_focus = ?", new String[]{"1"});
+        db.close();
+        dbHelper.close();
     }
 
     public boolean isRouteExists(String macAddress) {
@@ -46,6 +52,8 @@ public class RouteDao {
             return true;
         }
         cursor.close();
+        db.close();
+        dbHelper.close();
         return false;
     }
 
@@ -78,6 +86,8 @@ public class RouteDao {
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
+        db.close();
+        dbHelper.close();
         return route;
     }
 
@@ -110,6 +120,8 @@ public class RouteDao {
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
+        db.close();
+        dbHelper.close();
         return route;
     }
 
@@ -120,8 +132,12 @@ public class RouteDao {
         int affectedRowNumber = db.update(TABLE_NAME, values, "id = ?", new String[] {String.valueOf(route.id)});
 
         if (affectedRowNumber == 0) {
+            db.close();
+            dbHelper.close();
             return false;
         }
+        db.close();
+        dbHelper.close();
         return true;
     }
 

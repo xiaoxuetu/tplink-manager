@@ -1,23 +1,24 @@
 package com.xiaoxuetu.shield.login;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.xiaoxuetu.route.RouteApi;
+import com.xiaoxuetu.route.RouteApiFactory;
+import com.xiaoxuetu.route.RouteModel;
+import com.xiaoxuetu.route.model.CommonResult;
+import com.xiaoxuetu.route.model.Route;
 import com.xiaoxuetu.shield.MainActivity;
 import com.xiaoxuetu.shield.R;
 import com.xiaoxuetu.shield.login.dao.RouteDao;
-import com.xiaoxuetu.shield.route.api.IRouteApi;
-import com.xiaoxuetu.shield.route.api.impl.TPLinkRouteApiImpl;
-import com.xiaoxuetu.shield.route.model.CommonResult;
-import com.xiaoxuetu.shield.route.model.Route;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -50,19 +51,20 @@ public class LoginActivity extends AppCompatActivity {
             } else if (TextUtils.isEmpty(password)) {
                 msg = "密码不能为空";
             } else {
-                IRouteApi routeApi = TPLinkRouteApiImpl.getInstance();
+                RouteApi routeApi = RouteApiFactory.createRoute(RouteModel.TPLink.WR842N);
                 commonResult = routeApi.login(host, password);
 
                 if (commonResult.getCode() == CommonResult.CODE_FAILURE) {
                     msg = "密码错误";
                 } else {
                     isLoginSuccess = true;
+                    commonResult = routeApi.getRoute();
                 }
             }
 
             isLoginSuccessBundle.putBoolean(IS_LOGIN_SUCCESS_KEY, isLoginSuccess);
             isLoginSuccessBundle.putString(LOGIN_MSG_KEY, msg);
-            isLoginSuccessBundle.putParcelable(ROUTE_INFO_KEY, commonResult);
+            isLoginSuccessBundle.putSerializable(ROUTE_INFO_KEY, commonResult);
             message.setData(isLoginSuccessBundle);
             LoginActivity.this.loginResultHandler.sendMessage(message);
         }
@@ -82,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            CommonResult commonResult = msg.getData().getParcelable(ROUTE_INFO_KEY);
+            CommonResult commonResult = (CommonResult) msg.getData().getSerializable(ROUTE_INFO_KEY);
             boolean isSaveSuccess = saveRouteInfo(commonResult);
 
             if (!isSaveSuccess) {

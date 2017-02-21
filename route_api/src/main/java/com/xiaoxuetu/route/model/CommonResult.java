@@ -1,13 +1,12 @@
-package com.xiaoxuetu.shield.route.model;
+package com.xiaoxuetu.route.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.io.Serializable;
 
 /**
  * Created by kevin on 2017/1/14.
  */
 
-public class CommonResult implements Parcelable {
+public class CommonResult implements Serializable {
 
     public static final int CODE_FAILURE = 0;
 
@@ -19,22 +18,6 @@ public class CommonResult implements Parcelable {
 
     private Object data;
 
-    protected CommonResult(Parcel in) {
-        code = in.readInt();
-        message = in.readString();
-    }
-
-    public static final Creator<CommonResult> CREATOR = new Creator<CommonResult>() {
-        @Override
-        public CommonResult createFromParcel(Parcel in) {
-            return new CommonResult(in);
-        }
-
-        @Override
-        public CommonResult[] newArray(int size) {
-            return new CommonResult[size];
-        }
-    };
 
     public int getCode() {
         return code;
@@ -61,6 +44,17 @@ public class CommonResult implements Parcelable {
     }
 
     private CommonResult() {}
+
+    public boolean isFailure() {
+        if (code == CODE_FAILURE) {
+           return true;
+        }
+        return false;
+    }
+
+    public boolean isSuccess() {
+        return !isFailure();
+    }
 
     public static CommonResult success() {
         CommonResult commonResult = new CommonResult();
@@ -97,16 +91,5 @@ public class CommonResult implements Parcelable {
         CommonResult commonResult = failure(message);
         commonResult.setData(data);
         return commonResult;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(code);
-        dest.writeString(message);
     }
 }

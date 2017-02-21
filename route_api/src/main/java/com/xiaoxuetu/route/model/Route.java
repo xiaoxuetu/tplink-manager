@@ -1,4 +1,4 @@
-package com.xiaoxuetu.shield.route.model;
+package com.xiaoxuetu.route.model;
 
 /**
  * Created by kevin on 2017/2/9.
@@ -43,7 +43,7 @@ public class Route {
 
     @Override
     public String toString() {
-        return "Route{" +
+        return "RouteApi{" +
                 "id=" + id +
                 ", aliasName='" + aliasName + '\'' +
                 ", wifiName='" + wifiName + '\'' +

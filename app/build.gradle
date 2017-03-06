@@ -3,20 +3,41 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     //noinspection GradleDependency
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
         applicationId "com.xiaoxuetu.shield"
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0-beta"
     }
+
+
     buildTypes {
 
         release {
-            minifyEnabled false
+            minifyEnabled true
+            zipAlignEnabled true
+            //移除无用的resource文件
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def file = output.outputFile
+                    def currentTime = new Date().format('yyyyMMddhhmmss')
+                    System.out.println("开始修改APK名称：" + file.name);
+                    if (file != null && file.name.endsWith('.apk') && !file.name.contains("debug")) {
+
+                        //生成的文件名：TPLinkManager+阶段名称+版本号+生成时间.apk
+                        def fileName = "TPLinkManager-${defaultConfig.versionName}-${currentTime}.apk"
+                        System.out.println("开始修改APK名称:" + fileName);
+                        output.outputFile = new File(file.parent,fileName)
+                    }
+
+                }
+            }
         }
     }
 
@@ -24,15 +45,16 @@ android {
     lintOptions {
         abortOnError false
     }
-
 }
 
-dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    testCompile "org.robolectric:robolectric:3.2.1"
 
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.2.1'
     //noinspection GradleDependency
-    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:appcompat-v7:23+'
+    compile 'com.pgyersdk:sdk:2.4.5'
     compile project(path: ':route_api')
 }

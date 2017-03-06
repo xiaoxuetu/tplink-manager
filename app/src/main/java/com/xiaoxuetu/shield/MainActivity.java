@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pgyersdk.update.PgyUpdateManager;
 import com.xiaoxuetu.route.RouteApi;
 import com.xiaoxuetu.route.RouteApiFactory;
 import com.xiaoxuetu.route.RouteModel;
@@ -39,6 +40,8 @@ import java.util.Map;
  * TODO: MAC 地址格式的统一
  */
 public class MainActivity extends AppCompatActivity {
+
+    private final String PGYSDK_UPDATE_PROVIDER = "com.xiaoxuetu.shield.UpdateCenterProvider";
 
     private static final String LOGIN_RESULT_KEY = "login_result";
     private static final String DEVICES_KEY = "devices";
@@ -131,14 +134,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        PgyUpdateManager.register(this);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PgyUpdateManager.unregister();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        currentDeviceMacAddress = DeviceUtils.getMacAddress(getApplicationContext())
-                .toLowerCase();
+        currentDeviceMacAddress = DeviceUtils.getMacAddress(getApplicationContext());
         new Thread(deviceRefreshRunnable).start();
+
+        // 标记为非首次启动
         SharedPreferences sharedPreferences = getSharedPreferences("flag", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 

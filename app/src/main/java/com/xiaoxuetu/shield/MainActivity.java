@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +29,7 @@ import com.xiaoxuetu.shield.common.widget.dialog.MLTextView;
 import com.xiaoxuetu.shield.login.LoginActivity;
 import com.xiaoxuetu.shield.login.dao.RouteDao;
 import com.xiaoxuetu.shield.utils.DeviceUtils;
+import com.xiaoxuetu.shield.utils.PkgUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -135,8 +135,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        PgyUpdateManager.register(this);
+        if (PkgUtils.isApkInRelease(this)) {
+            PgyUpdateManager.register(this);
+        }
 
     }
 

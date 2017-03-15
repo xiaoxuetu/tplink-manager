@@ -27,17 +27,19 @@ android {
                 variant.outputs.each { output ->
                     def file = output.outputFile
                     def currentTime = new Date().format('yyyyMMddhhmmss')
-                    System.out.println("开始修改APK名称：" + file.name);
                     if (file != null && file.name.endsWith('.apk') && !file.name.contains("debug")) {
 
                         //生成的文件名：TPLinkManager+阶段名称+版本号+生成时间.apk
                         def fileName = "TPLinkManager-${defaultConfig.versionName}-${currentTime}.apk"
-                        System.out.println("开始修改APK名称:" + fileName);
                         output.outputFile = new File(file.parent,fileName)
                     }
 
                 }
             }
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
         }
     }
 

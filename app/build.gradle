@@ -1,5 +1,14 @@
 apply plugin: 'com.android.application'
 
+// 读取蒲公英配置文件
+def pgyPropertiesFileName = "pgyer.properties";
+if (!(new File(pgyPropertiesFileName).exists())) {
+    println("请先拷贝pgyer.properties.sample 为 pgyer.properties，并且配置PGYER_APPID")
+}
+
+Properties props = new Properties()
+props.load(new FileInputStream(file(pgyPropertiesFileName)))
+
 android {
     compileSdkVersion 23
     //noinspection GradleDependency
@@ -22,6 +31,10 @@ android {
             //移除无用的resource文件
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [
+                    "pgyerAppId": props["PGYER_APPID"],
+                    "appName": "@string/app_name"
+            ]
 
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
@@ -40,7 +53,12 @@ android {
 
         debug {
             applicationIdSuffix ".debug"
+            manifestPlaceholders = [
+                    "pgyerAppId": props["PGYER_APPID"],
+                    "appName": "@string/app_name_debug"
+            ]
         }
+
     }
 
     // 暂时忽略lint错误

@@ -19,6 +19,8 @@ dependencies:
 
 test:
   override:
-    - ./gradlew lint
-    - ./gradlew asR
+    - ./gradlew lint:
+        parallel: true
+    - ./gradlew asR:
+        parallel: true
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS

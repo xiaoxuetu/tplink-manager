@@ -1,4 +1,4 @@
-package com.xiaoxuetu.shield;
+package com.xiaoxuetu.tplink.splash;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.WindowManager;
 
-import com.xiaoxuetu.shield.login.LoginActivity;
+import com.xiaoxuetu.tplink.MainActivity;
+import com.xiaoxuetu.tplink.R;
+import com.xiaoxuetu.tplink.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
-
-    private View loginButton;
 
     public static final String FLAG_FISRT_START = "flag_first_start";
 
@@ -23,11 +22,8 @@ public class SplashActivity extends AppCompatActivity {
         // 必须在setContentView之前设置
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-
-
-
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        this.getWindow()
+                .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
         // 在4.0以后必须使用这种方式进行标题栏的隐藏
@@ -50,8 +46,6 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public boolean handleMessage(Message msg) {
                 SharedPreferences sharedPreferences = getSharedPreferences("flag", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
                 boolean isFirstStart = sharedPreferences.getBoolean(FLAG_FISRT_START, true);
 
                 Intent intent;
@@ -65,19 +59,4 @@ public class SplashActivity extends AppCompatActivity {
             }
         }).sendEmptyMessageDelayed(0, 500);
     }
-
-
-
-
-//    private void initButton() {
-//        loginButton = findViewById(R.id.button_add_new_router);
-//
-//        loginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
 }

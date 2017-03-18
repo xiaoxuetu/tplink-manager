@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-    package="com.xiaoxuetu.shield">
+    package="com.xiaoxuetu.tplink">
 
     <!-- 必选-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 获取网络状态 -->
@@ -21,17 +21,17 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".MyApplication">
-        <activity android:name=".SplashActivity">
+        android:name="com.xiaoxuetu.tplink.MyApplication">
+        <activity android:name="com.xiaoxuetu.tplink.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.LoginActivity" />
+        <activity android:name="com.xiaoxuetu.tplink.login.LoginActivity" />
 
-        <activity android:name=".MainActivity" />
+        <activity android:name="com.xiaoxuetu.tplink.MainActivity" />
 
         <!-- 可选-->
         <activity android:name="com.pgyersdk.activity.FeedbackActivity"/>

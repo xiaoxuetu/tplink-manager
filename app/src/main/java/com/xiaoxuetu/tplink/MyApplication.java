@@ -1,11 +1,10 @@
-package com.xiaoxuetu.shield;
+package com.xiaoxuetu.tplink;
 
 import android.app.Application;
 import android.util.Log;
 
 import com.pgyersdk.crash.PgyCrashManager;
-import com.pgyersdk.update.PgyUpdateManager;
-import com.xiaoxuetu.shield.utils.PkgUtils;
+import com.xiaoxuetu.tplink.utils.PkgUtils;
 
 /**
  * Created by kevin on 2017/3/6.

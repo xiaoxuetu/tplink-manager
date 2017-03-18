@@ -1,4 +1,4 @@
-package com.xiaoxuetu.shield.common.widget.dialog;
+package com.xiaoxuetu.tplink.common.widget.dialog;
 
 import android.graphics.Typeface;
 import android.text.TextPaint;

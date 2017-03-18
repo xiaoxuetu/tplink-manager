@@ -39,7 +39,7 @@
                 android:layout_alignTop="@id/router_icon">
 
                 <!-- 路由器名称显示 -->
-                <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+                <com.xiaoxuetu.tplink.common.widget.dialog.MLTextView
                     android:textSize="@dimen/common_textsize_1"
                     android:textColor="@color/common_textcolor_6"
                     android:ellipsize="middle"
@@ -93,7 +93,7 @@
             </LinearLayout>
 
             <!-- 当前路由器网速显示 -->
-            <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+            <com.xiaoxuetu.tplink.common.widget.dialog.MLTextView
                 android:textSize="@dimen/common_textsize_3"
                 android:textColor="@color/white_50_transparent"
                 android:gravity="bottom"

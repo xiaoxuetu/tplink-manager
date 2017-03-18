@@ -1,4 +1,4 @@
-package com.xiaoxuetu.shield.utils;
+package com.xiaoxuetu.tplink.utils;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;

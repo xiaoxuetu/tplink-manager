@@ -1,4 +1,4 @@
-package com.xiaoxuetu.shield;
+package com.xiaoxuetu.tplink;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,11 +25,12 @@ import com.xiaoxuetu.route.RouteModel;
 import com.xiaoxuetu.route.model.CommonResult;
 import com.xiaoxuetu.route.model.Device;
 import com.xiaoxuetu.route.model.Route;
-import com.xiaoxuetu.shield.common.widget.dialog.MLTextView;
-import com.xiaoxuetu.shield.login.LoginActivity;
-import com.xiaoxuetu.shield.login.dao.RouteDao;
-import com.xiaoxuetu.shield.utils.DeviceUtils;
-import com.xiaoxuetu.shield.utils.PkgUtils;
+import com.xiaoxuetu.tplink.common.widget.dialog.MLTextView;
+import com.xiaoxuetu.tplink.login.LoginActivity;
+import com.xiaoxuetu.tplink.login.dao.RouteDao;
+import com.xiaoxuetu.tplink.splash.SplashActivity;
+import com.xiaoxuetu.tplink.utils.DeviceUtils;
+import com.xiaoxuetu.tplink.utils.PkgUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

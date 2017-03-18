@@ -1,4 +1,4 @@
-package com.xiaoxuetu.shield;
+package com.xiaoxuetu.tplink;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

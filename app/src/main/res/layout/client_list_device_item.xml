@@ -27,7 +27,7 @@
         android:layout_height="1.0dip"
         android:layout_centerInParent="true" />
 
-    <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+    <com.xiaoxuetu.tplink.common.widget.dialog.MLTextView
         android:textSize="@dimen/common_textsize_2"
         android:textColor="@color/common_textcolor_1"
         android:id="@+id/client_name"
@@ -37,7 +37,7 @@
         android:layout_toRightOf="@id/client_icon"
         android:layout_above="@id/anchor" />
 
-    <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+    <com.xiaoxuetu.tplink.common.widget.dialog.MLTextView
         android:textSize="@dimen/common_textsize_3"
         android:textColor="@color/common_textcolor_2"
         android:id="@+id/client_event"
@@ -47,7 +47,7 @@
         android:layout_toRightOf="@id/client_icon"
         android:layout_below="@id/anchor" />
 
-    <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+    <com.xiaoxuetu.tplink.common.widget.dialog.MLTextView
         android:textSize="@dimen/common_textsize_3"
         android:textColor="@color/common_textcolor_2"
         android:gravity="center"
@@ -67,14 +67,14 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true">
 
-        <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+        <com.xiaoxuetu.tplink.common.widget.dialog.MLTextView
             android:textSize="@dimen/common_textsize_3"
             android:textColor="@color/common_textcolor_2"
             android:id="@+id/client_net_speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <com.xiaoxuetu.shield.common.widget.dialog.MLTextView
+        <com.xiaoxuetu.tplink.common.widget.dialog.MLTextView
             android:textSize="@dimen/common_textsize_3"
             android:textColor="@color/common_textcolor_3"
             android:id="@+id/client_extra_info"

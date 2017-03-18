@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context="com.xiaoxuetu.shield.login.LoginActivity">
+    tools:context="com.xiaoxuetu.tplink.com.xiaoxuetu.tplink.login.LoginActivity">
 
     <!-- title bar -->
     <include layout="@layout/title_bar" />

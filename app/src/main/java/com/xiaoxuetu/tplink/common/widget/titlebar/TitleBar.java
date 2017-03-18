@@ -1,4 +1,4 @@
-package com.xiaoxuetu.shield.common.widget.titlebar;
+package com.xiaoxuetu.tplink.common.widget.titlebar;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.xiaoxuetu.shield.R;
+import com.xiaoxuetu.tplink.R;
 
 /**
  * Created by kevin on 16/9/1.

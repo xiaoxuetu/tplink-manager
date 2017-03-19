@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     android:background="@color/white"
-    tools:context="com.xiaoxuetu.tplink.com.xiaoxuetu.tplink.MainActivity">
+    tools:context="com.xiaoxuetu.tplink.main.MainActivity">
 
     <include layout="@layout/router_title_bar"/>
 

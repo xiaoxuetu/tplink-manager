@@ -21,17 +21,17 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="com.xiaoxuetu.tplink.MyApplication">
-        <activity android:name="com.xiaoxuetu.tplink.splash.SplashActivity">
+        android:name=".TpLinkApplication">
+        <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.xiaoxuetu.tplink.login.LoginActivity" />
+        <activity android:name=".login.LoginActivity" />
 
-        <activity android:name="com.xiaoxuetu.tplink.MainActivity" />
+        <activity android:name=".main.MainActivity" />
 
         <!-- 可选-->
         <activity android:name="com.pgyersdk.activity.FeedbackActivity"/>

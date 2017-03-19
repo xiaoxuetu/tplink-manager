@@ -1,4 +1,4 @@
-package com.xiaoxuetu.tplink;
+package com.xiaoxuetu.tplink.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +25,7 @@ import com.xiaoxuetu.route.RouteModel;
 import com.xiaoxuetu.route.model.CommonResult;
 import com.xiaoxuetu.route.model.Device;
 import com.xiaoxuetu.route.model.Route;
+import com.xiaoxuetu.tplink.R;
 import com.xiaoxuetu.tplink.common.widget.dialog.MLTextView;
 import com.xiaoxuetu.tplink.login.LoginActivity;
 import com.xiaoxuetu.tplink.login.dao.RouteDao;
@@ -153,13 +154,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         currentDeviceMacAddress = DeviceUtils.getMacAddress(getApplicationContext());
         new Thread(deviceRefreshRunnable).start();
-
-        // 标记为非首次启动
-        SharedPreferences sharedPreferences = getSharedPreferences("flag", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putBoolean(SplashActivity.FLAG_FISRT_START, false);
-        editor.commit();
     }
 
 

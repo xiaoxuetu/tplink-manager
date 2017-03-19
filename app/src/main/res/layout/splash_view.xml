@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/splash"
-    tools:context="com.xiaoxuetu.tplink.splash.SplashActivity">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_marginTop="140.0dip"-->
-        <!--android:src="@drawable/common_logo_frame_15"/>-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_horizontal"-->
+    <!--android:layout_marginTop="140.0dip"-->
+    <!--android:src="@drawable/common_logo_frame_15"/>-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,18 +28,18 @@
         android:paddingRight="30.0dip">
 
         <!--<TextView-->
-            <!--style="@style/AppTheme.Splash_TextView"-->
-            <!--android:text="@string/splash_register" />-->
+        <!--style="@style/AppTheme.Splash_TextView"-->
+        <!--android:text="@string/splash_register" />-->
 
 
         <!--<TextView-->
-            <!--style="@style/AppTheme.Splash_TextView"-->
-            <!--android:text="@string/splash_login" />-->
+        <!--style="@style/AppTheme.Splash_TextView"-->
+        <!--android:text="@string/splash_login" />-->
 
         <!--<TextView-->
-            <!--android:id="@+id/button_add_new_router"-->
-            <!--style="@style/AppTheme.Splash_TextView"-->
-            <!--android:text="@string/splash_add_new_router" />-->
+        <!--android:id="@+id/button_add_new_router"-->
+        <!--style="@style/AppTheme.Splash_TextView"-->
+        <!--android:text="@string/splash_add_new_router" />-->
 
 
         <TextView
@@ -59,4 +54,4 @@
             android:padding="0dp"
             android:layout_gravity="center" />
     </LinearLayout>
-</FrameLayout>
+</merge>

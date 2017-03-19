@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -16,7 +17,8 @@ import com.xiaoxuetu.route.RouteApiFactory;
 import com.xiaoxuetu.route.RouteModel;
 import com.xiaoxuetu.route.model.CommonResult;
 import com.xiaoxuetu.route.model.Route;
-import com.xiaoxuetu.tplink.MainActivity;
+import com.xiaoxuetu.tplink.data.flag.FlagDataRepository;
+import com.xiaoxuetu.tplink.main.MainActivity;
 import com.xiaoxuetu.tplink.R;
 import com.xiaoxuetu.tplink.login.dao.RouteDao;
 
@@ -92,6 +94,9 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             // 进入到主界面
+            // 设置为非首次启动
+            Log.d("SplashActivity", "设置设备为非首次启动");
+            FlagDataRepository.getInstance().setNotFistStart();
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }

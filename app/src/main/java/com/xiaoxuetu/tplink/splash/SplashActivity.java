@@ -1,24 +1,15 @@
 package com.xiaoxuetu.tplink.splash;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
-import com.xiaoxuetu.tplink.data.flag.FlagDataRepository;
-import com.xiaoxuetu.tplink.main.MainActivity;
 import com.xiaoxuetu.tplink.R;
-import com.xiaoxuetu.tplink.login.LoginActivity;
+import com.xiaoxuetu.tplink.data.flag.FlagDataRepository;
 
 public class SplashActivity extends AppCompatActivity {
 
-    public static final String FLAG_FISRT_START = "flag_first_start";
     private SplashContract.Presenter mSplashPresenter;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

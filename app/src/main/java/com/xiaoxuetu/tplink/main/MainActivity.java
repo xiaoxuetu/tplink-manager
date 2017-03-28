@@ -2,7 +2,6 @@ package com.xiaoxuetu.tplink.main;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,9 +26,8 @@ import com.xiaoxuetu.route.model.Device;
 import com.xiaoxuetu.route.model.Route;
 import com.xiaoxuetu.tplink.R;
 import com.xiaoxuetu.tplink.common.widget.dialog.MLTextView;
+import com.xiaoxuetu.tplink.data.route.RouteLocalDataRepository;
 import com.xiaoxuetu.tplink.login.LoginActivity;
-import com.xiaoxuetu.tplink.login.dao.RouteDao;
-import com.xiaoxuetu.tplink.splash.SplashActivity;
 import com.xiaoxuetu.tplink.utils.DeviceUtils;
 import com.xiaoxuetu.tplink.utils.PkgUtils;
 
@@ -57,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
     private Runnable deviceRefreshRunnable = new Runnable() {
         @Override
         public void run() {
-            RouteDao routeDao = new RouteDao(getApplicationContext());
-            Route route = routeDao.findOnFocusRoute();
+
+            Route route = RouteLocalDataRepository.getInstance(getApplicationContext()).findOnFocusRoute();
 
             RouteApi routeApi = RouteApiFactory.createRoute(RouteModel.TPLink.WR842N);
             CommonResult loginResult = routeApi.login(route.ip, route.password);

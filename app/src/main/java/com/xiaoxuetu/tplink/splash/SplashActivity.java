@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_activity);
 
         // 初始化View
-        SplashContract.View view = new SplashView(this);
+        SplashContract.View view = (SplashContract.View) findViewById(R.id.splash_view);
 
         // 初始化Presenter
         FlagDataRepository repository = FlagDataRepository.getInstance();

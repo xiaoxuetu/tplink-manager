@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    tools:context="com.xiaoxuetu.tplink.login.LoginActivity">
-
-    <!-- title bar -->
-    <include layout="@layout/title_bar" />
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 内容主题 -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -141,5 +131,4 @@
             android:clickable="true"/>
     </LinearLayout>
 
-
-</LinearLayout>
+</merge>

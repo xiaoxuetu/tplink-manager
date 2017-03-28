@@ -5,131 +5,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.xiaoxuetu.route.RouteApi;
 import com.xiaoxuetu.route.RouteApiFactory;
 import com.xiaoxuetu.route.RouteModel;
-import com.xiaoxuetu.route.model.CommonResult;
-import com.xiaoxuetu.route.model.Route;
-import com.xiaoxuetu.tplink.data.flag.FlagDataRepository;
-import com.xiaoxuetu.tplink.main.MainActivity;
 import com.xiaoxuetu.tplink.R;
-import com.xiaoxuetu.tplink.login.dao.RouteDao;
+import com.xiaoxuetu.tplink.data.flag.FlagDataRepository;
+import com.xiaoxuetu.tplink.data.route.RouteLocalDataRepository;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String IS_LOGIN_SUCCESS_KEY = "is_login_success";
-    private static final String LOGIN_MSG_KEY = "login_msg";
-    private static final String ROUTE_INFO_KEY = "route_info";
-
-    private EditText hostEditText;
-    private EditText passwordEditText;
-
-    private String host;
-    private String password;
-
-    private Runnable loginRunnable = new Runnable() {
-        @Override
-        public void run() {
-            Message message = new Message();
-            Bundle isLoginSuccessBundle = new Bundle();
-
-            String msg = "";
-            boolean isLoginSuccess = false;
-
-
-            host = hostEditText.getText().toString();
-            password = passwordEditText.getText().toString();
-            CommonResult commonResult = null;
-
-            if (TextUtils.isEmpty(host)) {
-                msg = "IP地址不能为空";
-            } else if (TextUtils.isEmpty(password)) {
-                msg = "密码不能为空";
-            } else {
-                RouteApi routeApi = RouteApiFactory.createRoute(RouteModel.TPLink.WR842N);
-                commonResult = routeApi.login(host, password);
-
-                if (commonResult.getCode() == CommonResult.CODE_FAILURE) {
-                    msg = "密码错误";
-                } else {
-                    isLoginSuccess = true;
-                    commonResult = routeApi.getRoute();
-                }
-            }
-
-            isLoginSuccessBundle.putBoolean(IS_LOGIN_SUCCESS_KEY, isLoginSuccess);
-            isLoginSuccessBundle.putString(LOGIN_MSG_KEY, msg);
-            isLoginSuccessBundle.putSerializable(ROUTE_INFO_KEY, commonResult);
-            message.setData(isLoginSuccessBundle);
-            LoginActivity.this.loginResultHandler.sendMessage(message);
-        }
-    };
-
-    private Handler loginResultHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            boolean isLoginSuccess = msg.getData().getBoolean(IS_LOGIN_SUCCESS_KEY);
-            String msgStr = msg.getData().getString(LOGIN_MSG_KEY);
-
-            if (!isLoginSuccess) {
-                Toast.makeText(LoginActivity.this, msgStr, Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            CommonResult commonResult = (CommonResult) msg.getData().getSerializable(ROUTE_INFO_KEY);
-            boolean isSaveSuccess = saveRouteInfo(commonResult);
-
-            if (!isSaveSuccess) {
-                Toast.makeText(LoginActivity.this, "路由器信息获取失败，请重新登录", Toast.LENGTH_LONG).show();
-                return;
-            }
-            // 进入到主界面
-            // 设置为非首次启动
-            Log.d("SplashActivity", "设置设备为非首次启动");
-            FlagDataRepository.getInstance().setNotFistStart();
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-        }
-
-        private boolean saveRouteInfo(CommonResult commonResult) {
-
-            if (commonResult == null ||
-                    commonResult.getCode() == CommonResult.CODE_FAILURE) {
-                return false;
-            }
-
-            Route route = (Route) commonResult.getData();
-
-            route.password = password;
-            route.isOnFocus = true;
-
-            RouteDao routeDao = new RouteDao(getApplicationContext());
-            routeDao.updateAllRouteToUnFocus();
-            if (routeDao.isRouteExists(route.macAddress)) {
-                Route routeTemp = routeDao.findByMacAddress(route.macAddress);
-                route.id = routeTemp.id;
-                routeDao.update(route);
-            } else {
-                routeDao.save(route);
-            }
-            return true;
-        }
-    };
+    private LoginContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.login_activity);
 
         // 在4.0以后必须使用这种方式进行标题栏的隐藏
 //        ActionBar actionBar = getSupportActionBar();
@@ -137,24 +30,18 @@ public class LoginActivity extends AppCompatActivity {
 //        if (actionBar != null) {
 //            actionBar.hide();
 //        }
+
+        RouteLocalDataRepository routeLocalDataRepository = RouteLocalDataRepository.getInstance(getApplicationContext());
+        RouteApi routeApi = RouteApiFactory.createRoute(RouteModel.TPLink.WR842N);
+        FlagDataRepository flagDataRepository = FlagDataRepository.getInstance();
+
+        LoginView view = (LoginView) findViewById(R.id.login_view);
+        mPresenter = new LoginPresenter(routeLocalDataRepository, flagDataRepository, routeApi, view);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        hostEditText = (EditText) findViewById(R.id.login_account_host_editor);
-        passwordEditText = (EditText) findViewById(R.id.login_account_password_password_editor);
-
-        findViewById(R.id.login_account_password_login_button)
-                .setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                new Thread(loginRunnable).start();
-            }
-        });
     }
 
     private boolean isExit = false;

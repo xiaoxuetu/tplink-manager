@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 
 import com.xiaoxuetu.tplink.R;
 import com.xiaoxuetu.tplink.login.LoginActivity;
-import com.xiaoxuetu.tplink.main.MainActivity;
+import com.xiaoxuetu.tplink.main.DeviceActivity;
 
 /**
  * Created by kevin on 2017/3/19.
@@ -33,7 +33,7 @@ public class SplashView extends FrameLayout implements SplashContract.View {
 
     @Override
     public void showOnLineDevices() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), DeviceActivity.class);
         getContext().startActivity(intent);
     }
 

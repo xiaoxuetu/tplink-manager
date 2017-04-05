@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.xiaoxuetu.tplink.R;
-import com.xiaoxuetu.tplink.main.MainActivity;
+import com.xiaoxuetu.tplink.main.DeviceActivity;
 
 /**
  * Created by kevin on 2017/3/28.
@@ -53,7 +53,7 @@ public class LoginView extends FrameLayout implements LoginContract.View{
 
     @Override
     public void showOnLineDevices() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), DeviceActivity.class);
         getContext().startActivity(intent);
     }
 

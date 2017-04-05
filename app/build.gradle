@@ -81,6 +81,7 @@ dependencies {
     testCompile 'org.robolectric:robolectric:3.2.1'
     //noinspection GradleDependency
     compile 'com.android.support:appcompat-v7:23+'
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
     compile 'com.pgyersdk:sdk:2.4.5'
     compile project(path: ':route_api')
 }

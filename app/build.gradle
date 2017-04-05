@@ -3,7 +3,8 @@ apply plugin: 'com.android.application'
 // 读取蒲公英配置文件
 def pgyerAppId = ""
 def currentTime = new Date().format('yyyyMMddhhmmss')
-def pgyPropertiesFileName = "pgyer.properties";
+def currentPath = new File("").absolutePath
+def pgyPropertiesFileName = currentPath + File.separator + "app" + File.separator + "pgyer.properties"
 
 if (!(new File(pgyPropertiesFileName).exists())) {
     println("WARNING：请先拷贝pgyer.properties.sample 为 pgyer.properties，并且配置PGYER_APPID")
@@ -11,6 +12,7 @@ if (!(new File(pgyPropertiesFileName).exists())) {
     Properties props = new Properties()
     props.load(new FileInputStream(file(pgyPropertiesFileName)))
     pgyerAppId = props["PGYER_APPID"]
+    println("PGYER_APPID 是 " + pgyerAppId)
 }
 
 

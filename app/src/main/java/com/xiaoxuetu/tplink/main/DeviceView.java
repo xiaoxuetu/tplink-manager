@@ -1,6 +1,7 @@
 package com.xiaoxuetu.tplink.main;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -26,7 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.header.MaterialHeader;
+import in.srain.cube.views.ptr.util.PtrLocalDisplay;
 
 /**
  * Created by kevin on 2017/3/30.
@@ -53,42 +58,44 @@ public class DeviceView extends FrameLayout implements DeviceContract.View {
     public void init() {
         inflate(getContext(), R.layout.device_view, this);
 
-//        mDevicePtrFrameLayout = (PtrFrameLayout) findViewById(R.id.device_ftr_frame);
-//        Log.d(TAG, "设置PtrFrameLayout ： " + mDevicePtrFrameLayout);
-//        mDevicePtrFrameLayout.setPtrHandler(new PtrHandler() {
-//            @Override
-//            public void onRefreshBegin(PtrFrameLayout frame) {
-//                frame.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Log.d(TAG, "刷新路由器信息");
-//                        mPresenter.loadDevices();
-//                    }
-//                }, 1800);
-//            }
-//
-//            @Override
-//            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-//                // 默认实现，根据实际情况做改动
-//                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
-//            }
-//        });
-//
-//        final MaterialHeader header = new MaterialHeader(getContext());
-//
-//        //可以设置一组 颜色数组，改变进度显示的颜色变化
-//        header.setColorSchemeColors(new int[]{Color.RED, Color.BLUE, Color.GRAY, Color.GREEN});
-//        //设置布局参数，-1指匹配父窗体，-2指包裹内容
-//        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
-//        //设置内边距...PtrLocalDisplay框架自带
-//        header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, PtrLocalDisplay.dp2px(10));
-//        //告诉创建一个MaterialHeader 布局绑定在那个下拉刷新控件上
-//        header.setPtrFrameLayout(mDevicePtrFrameLayout);
-//
-//        //给下拉刷新设置下拉头部 MaterialHeader布局
-//        mDevicePtrFrameLayout.setHeaderView(header);
-//        //添加一个UI时间处理回调函数。为MaterialHeader的内部实现回调。
-//        mDevicePtrFrameLayout.addPtrUIHandler(header);
+        mDevicePtrFrameLayout = (PtrFrameLayout) findViewById(R.id.device_pull_refresh_view);
+        final ListView listView = (ListView) findViewById(R.id.client_list_view);
+        mDevicePtrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                frame.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "刷新路由器信息");
+                        mPresenter.loadDevices();
+                    }
+                }, 1800);
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                // 默认实现，根据实际情况做改动
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, listView, header);
+            }
+
+
+        });
+
+        final MaterialHeader header = new MaterialHeader(getContext());
+
+        //可以设置一组 颜色数组，改变进度显示的颜色变化
+        header.setColorSchemeColors(new int[]{Color.RED, Color.BLUE, Color.GRAY, Color.GREEN});
+        //设置布局参数，-1指匹配父窗体，-2指包裹内容
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        //设置内边距...PtrLocalDisplay框架自带
+        header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, PtrLocalDisplay.dp2px(10));
+        //告诉创建一个MaterialHeader 布局绑定在那个下拉刷新控件上
+        header.setPtrFrameLayout(mDevicePtrFrameLayout);
+
+        //给下拉刷新设置下拉头部 MaterialHeader布局
+        mDevicePtrFrameLayout.setHeaderView(header);
+        //添加一个UI时间处理回调函数。为MaterialHeader的内部实现回调。
+        mDevicePtrFrameLayout.addPtrUIHandler(header);
 
 
         currentDeviceMacAddress = DeviceUtils.getMacAddress(getContext());
@@ -108,6 +115,7 @@ public class DeviceView extends FrameLayout implements DeviceContract.View {
             View emptyView = findViewById(R.id.empty_view);
             emptyView.setVisibility(View.GONE);
             listView.setVisibility(View.VISIBLE);
+            mDevicePtrFrameLayout.refreshComplete();
             return false;
         }
     });

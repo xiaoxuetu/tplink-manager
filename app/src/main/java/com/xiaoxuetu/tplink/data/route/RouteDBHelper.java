@@ -5,11 +5,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.xiaoxuetu.tplink.BaseDBHelper;
+
 /**
  * Created by kevin on 2017/3/20.
  */
 
-public class RouteDBHelper extends SQLiteOpenHelper {
+public class RouteDBHelper extends BaseDBHelper {
 
     private final String TAG = getClass().getSimpleName();
 
@@ -17,13 +19,6 @@ public class RouteDBHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "Routes.db";
 
-    private static final String TEXT_TYPE = " TEXT";
-
-    private static final String INTEGER_TYPE = " INTEGER";
-
-    private static final String BOOLEAN_TYPE = " INTEGER";
-
-    private static final String COMMA_SEP = ",";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + RoutePersistenceContract.RouteEntry.TABLE_NAME + " (" +

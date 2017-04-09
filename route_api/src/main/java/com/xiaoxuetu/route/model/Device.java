@@ -6,6 +6,8 @@ package com.xiaoxuetu.route.model;
 
 public class Device {
 
+    public long id;
+
     public String aliasName;
 
     public String deviceName;
@@ -15,6 +17,10 @@ public class Device {
     public String ipAddress;
 
     public String validTime;
+
+    public boolean isOnLine;
+
+    public long routeId;
 
 
     public Device() {}

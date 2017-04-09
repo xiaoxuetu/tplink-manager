@@ -136,6 +136,7 @@ public class DeviceView extends FrameLayout implements DeviceContract.View {
             View emptyView = findViewById(R.id.empty_view);
             emptyView.setVisibility(View.VISIBLE);
             listView.setVisibility(View.GONE);
+            mDevicePtrFrameLayout.refreshComplete();
             return false;
         }
     });
@@ -147,6 +148,7 @@ public class DeviceView extends FrameLayout implements DeviceContract.View {
 
     @Override
     public void showFailureMessage(String msg) {
+        mDevicePtrFrameLayout.refreshComplete();
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 

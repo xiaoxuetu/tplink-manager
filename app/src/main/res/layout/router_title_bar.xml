@@ -105,7 +105,6 @@
                 android:text="0.0 KB/s"
                 android:layout_alignBottom="@id/router_icon" />
         </RelativeLayout>
-
     </RelativeLayout>
 
 </LinearLayout>

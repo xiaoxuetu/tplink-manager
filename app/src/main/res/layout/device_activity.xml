@@ -10,6 +10,7 @@
 
 
     <include layout="@layout/router_title_bar"/>
+    <include layout="@layout/router_header_tips"/>
 
     <com.xiaoxuetu.tplink.main.DeviceView
         android:id="@+id/device_view"

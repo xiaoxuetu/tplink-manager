@@ -24,7 +24,6 @@ public class DeviceDBHelper extends BaseDBHelper {
                     DeviceEntry.COLUMN_NAME_DEVICE_ALIAS + TEXT_TYPE + COMMA_SEP +
                     DeviceEntry.COLUMN_NAME_MAC_ADDRESS + TEXT_TYPE + COMMA_SEP +
                     DeviceEntry.COLUMN_NAME_DEVICE_NAME + TEXT_TYPE + COMMA_SEP +
-                    DeviceEntry.COLUMN_NAME_DEVICE_ALIAS + TEXT_TYPE + COMMA_SEP +
                     DeviceEntry.COLUMN_NAME_ONLINE + BOOLEAN_TYPE + COMMA_SEP +
                     DeviceEntry.COLUMN_NAME_ROUTE_ID + INTEGER_TYPE +
                     ")";

@@ -18,4 +18,6 @@
     <color name="divider_color_4">#dfdfdfdf</color>
 
     <color name="listview_item_selected">#fff9f9f9</color>
+
+    <color name="class_text_2">#ff555555</color>
 </resources>

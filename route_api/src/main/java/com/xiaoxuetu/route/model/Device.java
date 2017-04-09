@@ -35,11 +35,14 @@ public class Device {
     @Override
     public String toString() {
         return "Device{" +
-                "aliasName='" + aliasName + '\'' +
-                "deviceName='" + deviceName + '\'' +
+                "id=" + id +
+                ", aliasName='" + aliasName + '\'' +
+                ", deviceName='" + deviceName + '\'' +
                 ", macAddress='" + macAddress + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +
                 ", validTime='" + validTime + '\'' +
+                ", isOnLine=" + isOnLine +
+                ", routeId=" + routeId +
                 '}';
     }
 }

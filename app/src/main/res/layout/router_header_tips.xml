@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:background="@drawable/common_tips_bg_normal"
+              android:paddingLeft="@dimen/common_tips_padding"
+              android:paddingRight="@dimen/common_tips_padding"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/router_header_tips">
+
+    <ImageView
+        android:id="@+id/client_header_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/common_tips_icon_switch_wifi" />
+
+    <LinearLayout android:orientation="vertical"
+                  android:layout_width="0.0dip"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="@dimen/common_tips_text_margin_left"
+                  android:layout_weight="1.0">
+        <TextView
+            android:textSize="@dimen/common_textsize_2"
+            android:textColor="@color/common_textcolor_1"
+            android:ellipsize="end"
+            android:id="@+id/client_header_item_text"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/reminder_switch_wifi"
+            android:maxLines="1"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="@dimen/common_textsize_4"
+            android:textColor="@color/class_text_2"
+            android:gravity="center"
+            android:id="@+id/client_header_item_button"
+            android:background="@drawable/common_list_button"
+            android:layout_width="50.0dip"
+            android:layout_height="30.0dip"
+            android:text="@string/reminder_switch_wifi_button" />
+    </FrameLayout>
+
+</LinearLayout>

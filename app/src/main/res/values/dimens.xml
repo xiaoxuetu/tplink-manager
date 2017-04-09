@@ -12,6 +12,8 @@
 
     <dimen name="common_full_content_padding_horizontal">15.0dip</dimen>
     <dimen name="common_full_content_padding_top">20.0dip</dimen>
+    <dimen name="common_tips_padding">15.0dip</dimen>
+    <dimen name="common_tips_text_margin_left">10.0dip</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>

@@ -17,4 +17,7 @@
     <string name="main_router_type_relay">中继</string>
 
     <string name="client_list_empty_prompt">暂无连接的设备</string>
+    <string name="reminder_open_network">请打开网络访问</string>
+    <string name="reminder_switch_wifi">建议切换至WIFI</string>
+    <string name="reminder_switch_wifi_button">切换</string>
 </resources>

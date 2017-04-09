@@ -1,27 +1,32 @@
 package com.xiaoxuetu.tplink.main;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pgyersdk.update.PgyUpdateManager;
 import com.xiaoxuetu.route.RouteApi;
 import com.xiaoxuetu.route.RouteApiFactory;
 import com.xiaoxuetu.route.RouteModel;
 import com.xiaoxuetu.route.model.Route;
+import com.xiaoxuetu.tplink.BaseActivity;
 import com.xiaoxuetu.tplink.R;
+import com.xiaoxuetu.tplink.TpLinkApplication;
+import com.xiaoxuetu.tplink.data.device.DeviceLocalDataRepository;
 import com.xiaoxuetu.tplink.data.route.RouteLocalDataRepository;
+import com.xiaoxuetu.tplink.utils.NetworkUtils;
 import com.xiaoxuetu.tplink.utils.PkgUtils;
 
 /**
  * TODO: MAC 地址格式的统一
  */
-public class DeviceActivity extends AppCompatActivity {
+public class DeviceActivity extends BaseActivity {
 
     private DevicePresenter mPresenter;
 
@@ -37,7 +42,18 @@ public class DeviceActivity extends AppCompatActivity {
         RouteApi routeApi = RouteApiFactory.createRoute(RouteModel.TPLink.WR842N);
         DeviceView view = (DeviceView) findViewById(R.id.device_view);
         RouteLocalDataRepository routeLocalDataRepository  = RouteLocalDataRepository.getInstance(this);
-        mPresenter = new DevicePresenter(routeLocalDataRepository, routeApi, view);
+        DeviceLocalDataRepository deviceLocalDataRepository = DeviceLocalDataRepository.getInstance(this);
+        mPresenter = new DevicePresenter(routeLocalDataRepository, deviceLocalDataRepository, routeApi, view);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mPresenter.judgeNetState(this);
+
+        if (NetworkUtils.getNetype(getBaseContext()) != NetworkUtils.WIFI_NETWORK) {
+            return;
+        }
         mPresenter.start();
         mPresenter.loadRoute(this);
     }
@@ -52,8 +68,10 @@ public class DeviceActivity extends AppCompatActivity {
             return false;
         }
     });
+
     public void showRoute(Route route) {
         mRoute = route;
+        Log.d(TAG, "路由器的名称是 " + route.wifiName);
         mShowRouteHandler.sendEmptyMessage(0);
     }
 
@@ -68,41 +86,64 @@ public class DeviceActivity extends AppCompatActivity {
         }
     }
 
-
-    private boolean isExit = false;
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {// 当keyCode等于退出事件值时
-            quit();
-            return false;
-        } else {
-            return super.onKeyDown(keyCode, event);
-        }
+    public void dismissNetWorkTips() {
+        findViewById(R.id.router_header_tips).setVisibility(View.GONE);
     }
 
-    private void quit() {
-        if (isExit) {
-            // ACTION_MAIN with category CATEGORY_HOME 启动主屏幕
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            startActivity(intent);
-            System.exit(0);// 使虚拟机停止运行并退出程序
-        } else {
-            isExit = true;
-            Toast.makeText(DeviceActivity.this, "再按一次退出哦", Toast.LENGTH_SHORT).show();
-            mHandler.sendEmptyMessageDelayed(0, 3000);// 3秒后发送消息
-        }
+    public void showOpenNetworkTips() {
+        // 修改按钮文本
+        TextView btnTextView = (TextView) findViewById(R.id.client_header_item_button);
+        btnTextView.setText("打开");
+
+        btnTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ComponentName componentName = new ComponentName(
+                        "com.android.settings",
+                        "com.android.settings.wifi.WifiPickerActivity");
+                Intent localIntent = new Intent();
+                localIntent.setComponent(componentName);
+                startActivityForResult(localIntent, 1);
+            }
+        });
+
+        btnTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent localIntent = new Intent();
+                localIntent.setComponent(new ComponentName(
+                        "com.android.settings",
+                        "com.android.settings.wifi.WifiPickerActivity" ));
+                startActivityForResult(localIntent, 1);
+            }
+        });
+
+        // 打开网络提示
+        TextView textView = (TextView) findViewById(R.id.client_header_item_text);
+        textView.setText(getString(R.string.reminder_open_network));
+        findViewById(R.id.router_header_tips).setVisibility(View.VISIBLE);
     }
 
-    //创建Handler对象，用来处理消息
-    private Handler mHandler = new Handler() {
+    public void showSwitchWifiTips() {
+        // 修改按钮文本
+        TextView btnTextView = (TextView) findViewById(R.id.client_header_item_button);
+        btnTextView.setText("切换");
 
-        @Override
-        public void handleMessage(Message msg) {//处理消息
-            // TODO Auto-generated method stub
-            super.handleMessage(msg);
-            isExit = false;
-        }
-    };
+        btnTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ComponentName componentName = new ComponentName(
+                        "com.android.settings",
+                        "com.android.settings.wifi.WifiPickerActivity");
+                Intent localIntent = new Intent();
+                localIntent.setComponent(componentName);
+                startActivityForResult(localIntent, 1);
+            }
+        });
+
+        // 打开WI-FI提示
+        TextView textView = (TextView) findViewById(R.id.client_header_item_text);
+        textView.setText(getString(R.string.reminder_switch_wifi));
+        findViewById(R.id.router_header_tips).setVisibility(View.VISIBLE);
+    }
 }

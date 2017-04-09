@@ -21,6 +21,7 @@ import com.xiaoxuetu.route.util.Formatter;
 import com.xiaoxuetu.tplink.R;
 import com.xiaoxuetu.tplink.common.widget.dialog.MLTextView;
 import com.xiaoxuetu.tplink.utils.DeviceUtils;
+import com.xiaoxuetu.tplink.utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,6 +75,10 @@ public class DeviceView extends FrameLayout implements DeviceContract.View {
 
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                if (NetworkUtils.getNetype(content.getContext()) != NetworkUtils.WIFI_NETWORK) {
+                    Log.d(TAG, "无网络访问，无法刷新");
+                    return false;
+                }
                 // 默认实现，根据实际情况做改动
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, listView, header);
             }
@@ -146,10 +151,21 @@ public class DeviceView extends FrameLayout implements DeviceContract.View {
         mShowNoDevicesHandler.sendEmptyMessage(0);
     }
 
+    private volatile String failureMessage = "";
+
+    private Handler mShowFailureMessage = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            mDevicePtrFrameLayout.refreshComplete();
+            Toast.makeText(DeviceView.this.getContext(), failureMessage, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    });
     @Override
     public void showFailureMessage(String msg) {
-        mDevicePtrFrameLayout.refreshComplete();
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        failureMessage = msg;
+        mShowFailureMessage.sendEmptyMessage(0);
+//        failureMessage = "";
     }
 
     @Override
@@ -165,7 +181,7 @@ public class DeviceView extends FrameLayout implements DeviceContract.View {
             Map<String, Object> deviceMap = new HashMap<>();
             deviceMap.put("client_icon", R.drawable.client_device_list_unknown);
 
-            deviceMap.put("client_name", device.deviceName);
+            deviceMap.put("client_name", device.aliasName);
             deviceMap.put("client_mac_address", device.macAddress);
             deviceMap.put("client_event", "2.4G连接");
 //            deviceMap.put("event_time", "2016-12-24 00:10:1" + i);

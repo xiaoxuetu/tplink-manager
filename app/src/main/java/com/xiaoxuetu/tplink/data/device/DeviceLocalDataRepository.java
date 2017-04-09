@@ -9,7 +9,6 @@ import android.text.TextUtils;
 
 import com.xiaoxuetu.route.model.Device;
 import com.xiaoxuetu.tplink.data.device.DevicePersistenceContract.DeviceEntry;
-import com.xiaoxuetu.tplink.data.route.RoutePersistenceContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +60,7 @@ public class DeviceLocalDataRepository implements DeviceDataSource {
 
     @Override
     public Device findByMacAddress(String macAddress, long routeId) {
-        Device device;
+        Device device = null;
         String routeIdStr = routeId == 0 ? null : String.valueOf(routeId);
         String selection = DeviceEntry.COLUMN_NAME_MAC_ADDRESS + "= ? ";
 
@@ -73,9 +72,12 @@ public class DeviceLocalDataRepository implements DeviceDataSource {
         if (!TextUtils.isEmpty(routeIdStr)) {
             selectionArgs = new String[]{macAddress, routeIdStr};
         }
-        Cursor cursor = mDB.query(RoutePersistenceContract.RouteEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null);
-        cursor.moveToFirst();
-        device = changeCursorToObject(cursor);
+        Cursor cursor = mDB.query(DeviceEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null);
+
+        if (cursor != null && cursor.getCount() >0 ) {
+            cursor.moveToFirst();
+            device = changeCursorToObject(cursor);
+        }
         cursor.close();
         return device;
     }

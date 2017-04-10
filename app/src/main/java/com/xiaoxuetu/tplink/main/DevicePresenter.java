@@ -110,8 +110,7 @@ public class DevicePresenter implements DeviceContract.Presenter {
         }
     }
 
-    @Override
-    public void start() {
+    public void start(final DeviceActivity deviceActivity) {
         final Route route = mRouteLocalDataRepository.findOnFocusRoute();
 
         new Thread(new Runnable() {
@@ -119,7 +118,12 @@ public class DevicePresenter implements DeviceContract.Presenter {
             public void run() {
                 mRouteApi.login(route.ip, route.password);
                 loadDevices();
+                loadRoute(deviceActivity);
             }
         }).start();
+    }
+
+    public void start() {
+
     }
 }

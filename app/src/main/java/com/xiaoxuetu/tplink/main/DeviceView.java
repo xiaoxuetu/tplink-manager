@@ -58,7 +58,11 @@ public class DeviceView extends FrameLayout implements DeviceContract.View {
 
     public void init() {
         inflate(getContext(), R.layout.device_view, this);
+        initPullRefreshView();
+        currentDeviceMacAddress = DeviceUtils.getMacAddress(getContext());
+    }
 
+    private void initPullRefreshView() {
         mDevicePtrFrameLayout = (PtrFrameLayout) findViewById(R.id.device_pull_refresh_view);
         final ListView listView = (ListView) findViewById(R.id.client_list_view);
         mDevicePtrFrameLayout.setPtrHandler(new PtrHandler() {
@@ -96,14 +100,12 @@ public class DeviceView extends FrameLayout implements DeviceContract.View {
         header.setPadding(0, PtrLocalDisplay.dp2px(15), 0, PtrLocalDisplay.dp2px(10));
         //告诉创建一个MaterialHeader 布局绑定在那个下拉刷新控件上
         header.setPtrFrameLayout(mDevicePtrFrameLayout);
+        mDevicePtrFrameLayout.autoRefresh();
 
         //给下拉刷新设置下拉头部 MaterialHeader布局
         mDevicePtrFrameLayout.setHeaderView(header);
         //添加一个UI时间处理回调函数。为MaterialHeader的内部实现回调。
         mDevicePtrFrameLayout.addPtrUIHandler(header);
-
-
-        currentDeviceMacAddress = DeviceUtils.getMacAddress(getContext());
     }
 
     private List<Device> mDeviceList;

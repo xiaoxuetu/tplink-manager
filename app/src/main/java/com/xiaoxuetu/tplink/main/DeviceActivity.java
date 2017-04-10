@@ -1,7 +1,6 @@
 package com.xiaoxuetu.tplink.main;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,7 +16,6 @@ import com.xiaoxuetu.route.RouteModel;
 import com.xiaoxuetu.route.model.Route;
 import com.xiaoxuetu.tplink.BaseActivity;
 import com.xiaoxuetu.tplink.R;
-import com.xiaoxuetu.tplink.TpLinkApplication;
 import com.xiaoxuetu.tplink.data.device.DeviceLocalDataRepository;
 import com.xiaoxuetu.tplink.data.route.RouteLocalDataRepository;
 import com.xiaoxuetu.tplink.utils.NetworkUtils;
@@ -54,8 +52,7 @@ public class DeviceActivity extends BaseActivity {
         if (NetworkUtils.getNetype(getBaseContext()) != NetworkUtils.WIFI_NETWORK) {
             return;
         }
-        mPresenter.start();
-        mPresenter.loadRoute(this);
+        mPresenter.start(this);
     }
 
     private Route mRoute;

@@ -44,19 +44,19 @@ android {
                     "appName": "@string/app_name"
             ]
 
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def file = output.outputFile
-
-                    if (file != null && file.name.endsWith('.apk') && !file.name.contains("debug")) {
-
-                        //生成的文件名：TPLinkManager+阶段名称+版本号+生成时间.apk
-                        def fileName = "TPLinkManager-${defaultConfig.versionName}.apk"
-                        output.outputFile = new File(file.parent,fileName)
-                    }
-
-                }
-            }
+//            applicationVariants.all { variant ->
+//                variant.outputs.each { output ->
+//                    def file = output.outputFile
+//
+//                    if (file != null && file.name.endsWith('.apk') && !file.name.contains("debug")) {
+//
+//                        //生成的文件名：TPLinkManager+阶段名称+版本号+生成时间.apk
+//                        def fileName = "TPLinkManager-${defaultConfig.versionName}.apk"
+//                        output.outputFile = new File(file.parent,fileName)
+//                    }
+//
+//                }
+//            }
         }
 
         debug {
